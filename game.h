@@ -13,7 +13,11 @@ public:
 
 //控制玩家是否可操作
     void changeStatus(int flag);
+
     void changeSteps();
+
+//检验游戏是否结束
+    int isGameOver();
 
 private:
     int level;

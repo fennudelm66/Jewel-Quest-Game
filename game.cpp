@@ -75,3 +75,13 @@ void Game::changeSteps(){
     steps--;
 }
 
+//判断游戏是否结束√
+int Game::isGameOver(){
+    if(this->steps==0&&this->points < this->goal){
+        return -1;
+    }else if(this->points >= this->goal){
+        return 1;
+    }
+    return 0;
+
+}
