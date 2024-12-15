@@ -1,5 +1,11 @@
 #include "block.h"
 
+Block::Block(){
+    x = -1;
+    y = -1;
+    type = 0;
+}
+
 Block::Block(int x, int y) :type(0) {
     this->x = x;
     this->y = y;
@@ -18,6 +24,10 @@ int Block::getY() const{
 void Block::setPosition(int newX, int newY){
     x = newX;
     y = newY;
+}
+
+int Block::getType() const{
+    return type;
 }
 
 void Block::setType(int newType){

@@ -4,11 +4,12 @@
 class Block
 {
 public:
+    Block();
     Block(int x, int y);
 
     int getX() const;
     int getY() const;
-    int getType();
+    int getType() const;
     void setType(int newType);
     void setPosition(int newX, int newY);
 

@@ -38,7 +38,7 @@ void Board::findRemovableBlocks(std::vector<std::pair<int, int>>& removableBlock
     for (int row = 0; row < rows; ++row) {
         for (int col = 0; col < cols - 2; ++col) {
             Block& block = grid[row][col];
-            if (block.getType() != NULL && block.getType() == grid[row][col + 1].getType() && block.getType() == grid[row][col + 2].getType()) {
+            if (block.getType() != 0 && block.getType() == grid[row][col + 1].getType() && block.getType() == grid[row][col + 2].getType()) {
                 removable[row][col] = removable[row][col + 1] = removable[row][col + 2] = true;
             }
         }
@@ -48,7 +48,7 @@ void Board::findRemovableBlocks(std::vector<std::pair<int, int>>& removableBlock
     for (int col = 0; col < cols; ++col) {
         for (int row = 0; row < rows - 2; ++row) {
             Block& block = grid[row][col];
-            if (block.getType() != NULL && block.getType() == grid[row + 1][col].getType() && block.getType() == grid[row + 2][col].getType()) {
+            if (block.getType() != 0 && block.getType() == grid[row + 1][col].getType() && block.getType() == grid[row + 2][col].getType()) {
                 removable[row][col] = removable[row + 1][col] = removable[row + 2][col] = true;
             }
         }
