@@ -1,0 +1,29 @@
+#ifndef AUDIOMANAGER_H
+#define AUDIOMANAGER_H
+
+#include<QObject>
+#include<QMediaPlayer>
+#include<QMediaPlaylist>
+#include<QMap>
+
+
+class AudioManager : public QObject
+{
+    Q_OBJECT
+
+public:
+    explicit AudioManager(QObject *parent = nullptr);
+
+    void playBackgroundMusic(const QString &filePath);
+    void stopBackgroundMusic();
+    void playSoundEffect(const QString &effectName);
+    void loadSoundEffect(const QString &effectName, const QString &filePath);
+    void setVolume(int volume);
+
+private:
+    QMediaPlayer *backgroundMusicPlayer;
+    QMediaPlaylist *playlist;
+    QMap<QString,QMediaPlayer*> soundEffects;
+};
+
+#endif // AUDIOMANAGER_H
