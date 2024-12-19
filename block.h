@@ -2,6 +2,8 @@
 #define BLOCK_H
 
 #include <QPushButton>
+#include <QPixmap>
+#include <QIcon>
 
 class Block : public QPushButton
 {
@@ -9,36 +11,27 @@ class Block : public QPushButton
 
 public:
     // 默认构造函数
-    Block(QWidget *parent = nullptr,int type = 0)
-        : QPushButton(parent), type(type)
-    {
+    Block(QWidget *parent = nullptr, int type = 0, int x = 0, int y = 0);
 
-        // 可选：设置按钮的默认显示文本或图标等
-        this->setText(QString("Block(%1, %2)").arg(x).arg(y));
-    }
+    // 获取棋子坐标
+    int getX() const;
+    int getY() const;
 
-    // 获取坐标
-    int getX() const { return x; }
-    int getY() const { return y; }
+    // 改变棋子位置
+    void setPosition(int newX, int newY);
 
-    // 获取类型
-    int getType() const { return type; }
+    // 获取棋子类型
+    int getType() const;
 
-    // 设置类型
-    void setType(int newType) { type = newType; }
-
-    // 设置位置
-    void setPosition(int newX, int newY)
-    {
-        x = newX;
-        y = newY;
-        // // 如果需要，更新按钮的显示文本或位置
-        // this->setText(QString("Block(%1, %2)").arg(x).arg(y));
-    }
+    // 设置棋子类型
+    void setType(int newType);
 
 private:
-    int type;  // 表示块的类型
+    int type;  // 宝石或道具类型
     int x, y;  // 坐标
+
+    // 设置图标
+    void setBlockIcon();
 };
 
 #endif // BLOCK_H
