@@ -3,9 +3,9 @@
 // 构造函数，初始化背景音乐播放器和播放列表
 AudioManager::AudioManager(QObject *parent) : QObject(parent) {
     backgroundMusicPlayer = new QMediaPlayer(this);  // 初始化背景音乐播放器
-    playlist = new QMediaPlaylist(this);  // 初始化播放列表
+    playlist = new QMediaPlayer(this);  // 初始化播放列表
     backgroundMusicPlayer->setPlaylist(playlist);  // 将播放列表绑定到播放器
-    playlist->setPlaybackMode(QMediaPlaylist::Loop);  // 设置播放列表为循环模式
+    playlist->setPlaybackMode(QMediaPlayer::Loop);  // 设置播放列表为循环模式
 }
 
 // 播放背景音乐

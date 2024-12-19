@@ -1,5 +1,8 @@
 QT       += core gui
 QT += core gui multimedia
+QT += core gui network
+QT += sql
+
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -11,23 +14,19 @@ CONFIG += c++17
 
 SOURCES += \
     InputManager.cpp \
-    audiomanager.cpp \
     block.cpp \
     board.cpp \
     game.cpp \
     gamemodeWindow.cpp \
-    logindialog.cpp \
     main.cpp \
     mainwindow.cpp
 
 HEADERS += \
-    audiomanager.h \
     block.h \
     board.h \
     game.h \
     gamemodeWindow.h \
     inputmanager.h \
-    logindialog.h \
     mainwindow.h
 
 FORMS += \

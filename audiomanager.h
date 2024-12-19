@@ -3,7 +3,6 @@
 
 #include<QObject>
 #include<QMediaPlayer>
-#include<QMediaPlaylist>
 #include<QMap>
 
 
@@ -22,7 +21,7 @@ public:
 
 private:
     QMediaPlayer *backgroundMusicPlayer;
-    QMediaPlaylist *playlist;
+    QMediaPlayer *playlist;
     QMap<QString,QMediaPlayer*> soundEffects;
 };
 
