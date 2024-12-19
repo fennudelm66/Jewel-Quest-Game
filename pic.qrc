@@ -3,5 +3,12 @@
         <file>1.jpg</file>
         <file>PopupBackground.png</file>
         <file>Settings.png</file>
+        <file>alarm.png</file>
+        <file>LevelBackground.png</file>
+        <file>gem0.png</file>
+        <file>gem1.png</file>
+        <file>gem2.png</file>
+        <file>gems.png</file>
+        <file>default.png</file>
     </qresource>
 </RCC>

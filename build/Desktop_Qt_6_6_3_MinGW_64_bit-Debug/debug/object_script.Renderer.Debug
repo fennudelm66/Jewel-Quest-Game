@@ -1,0 +1,12 @@
+debug/GameModeWindow.o
+debug/block.o
+debug/endlessmodewindow.o
+debug/levelselectwindow.o
+debug/main.o
+debug/mainwindow.o
+debug/qrc_pic.o
+debug/moc_GameModeWindow.o
+debug/moc_block.o
+debug/moc_endlessmodewindow.o
+debug/moc_levelselectwindow.o
+debug/moc_mainwindow.o

@@ -26,8 +26,8 @@ public:
         stageModeButton->setFixedSize(120, 60);
         stageModeButton->move(140, 120);  // 设置位置
 
-        // 创建 "无尽模式" 按钮
-        QPushButton *endlessModeButton = new QPushButton("无尽模式", this);
+        // 创建"限时模式" 按钮
+        QPushButton *endlessModeButton = new QPushButton("限时模式", this);
         endlessModeButton->setStyleSheet("background-color: yellow; color: brown; font: bold 16px;");
         endlessModeButton->setFixedSize(120, 60);
         endlessModeButton->move(140, 190);  // 设置位置

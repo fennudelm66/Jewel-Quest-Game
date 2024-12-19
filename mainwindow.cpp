@@ -1,5 +1,8 @@
 #include "mainwindow.h"
 #include "GameModeWindow.h"
+#include "LevelSelectWindow.h"
+#include "EndlessModeWindow.h"
+
 #include <QPushButton>
 #include <QVBoxLayout>
 #include <QPainter>
@@ -160,14 +163,56 @@ void MainWindow::onStartClicked()
 
 void MainWindow::onStageModeSelected()
 {
-    // 处理闯关模式的逻辑
-    // 比如切换到闯关模式的界面
-    qDebug() << "闯关模式选中!";
+    // 创建并显示关卡选择弹窗
+    LevelSelectWindow *levelSelectWindow = new LevelSelectWindow(this);
+
+    // 获取主窗口的中心位置，计算弹窗的居中位置
+    int targetX = (this->width() - levelSelectWindow->width()) / 2;
+    int targetY = (this->height() - levelSelectWindow->height()) / 2;
+
+    // 设置弹窗显示的位置
+    levelSelectWindow->move(targetX, targetY);
+
+    // 显示关卡选择窗口
+    levelSelectWindow->show();
+
+    // 连接信号与槽
+    connect(levelSelectWindow, &LevelSelectWindow::levelSelected, this, &MainWindow::onLevelSelected);
+}
+
+void MainWindow::onLevelSelected(int level)
+{
+    qDebug() << "选中的关卡是:" << level;
+
+    // 关闭关卡选择窗口
+    LevelSelectWindow *senderWindow = qobject_cast<LevelSelectWindow*>(sender());
+    if (senderWindow) {
+        senderWindow->close();
+    }
+
+    // 传递关卡信息，启动游戏主画面
+    startGame(level);
+}
+
+void MainWindow::startGame(int level)
+{
+    // 在这里根据关卡编号进行游戏初始化，可以跳转到新的游戏界面
+    qDebug() << "开始游戏，当前关卡是: " << level;
+
+    // 你可以将这个 `level` 传递给游戏主画面窗口进行处理
+    // 例如：
+    // GameWindow *gameWindow = new GameWindow(level, this);
+    // gameWindow->show();
 }
 
 void MainWindow::onEndlessModeSelected()
 {
-    // 处理无尽模式的逻辑
-    // 比如切换到无尽模式的界面
-    qDebug() << "无尽模式选中!";
+    qDebug() << "限时模式选中!";
+
+    // 隐藏当前窗口
+    this->hide();
+
+    // 创建并显示新的窗口
+    EndlessModeWindow *endlessWindow = new EndlessModeWindow(nullptr);
+    endlessWindow->show();
 }

@@ -10,11 +10,17 @@ CONFIG += c++17
 
 SOURCES += \
     GameModeWindow.cpp \
+    block.cpp \
+    endlessmodewindow.cpp \
+    levelselectwindow.cpp \
     main.cpp \
     mainwindow.cpp
 
 HEADERS += \
     GameModeWindow.h \
+    block.h \
+    endlessmodewindow.h \
+    levelselectwindow.h \
     mainwindow.h
 
 # Default rules for deployment.

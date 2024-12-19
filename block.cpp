@@ -51,17 +51,17 @@ void Block::setBlockIcon()
     // 根据类型设置对应的图标路径
     switch (type) {
     case 0:
-        iconPath = ":/images/gem0.png";  // type 0 图标
+        iconPath = ":/image/gem0.png";  // type 0 图标
         break;
     case 1:
-        iconPath = ":/images/gem1.png";  // type 1 图标
+        iconPath = ":/image/gem1.png";  // type 1 图标
         break;
     case 2:
-        iconPath = ":/images/gem2.png";  // type 2 图标
+        iconPath = ":/image/gem2.png";  // type 2 图标
         break;
     // 添加更多类型及其图标路径
     default:
-        iconPath = ":/images/default.png";  // 默认图标
+        iconPath = ":/image/default.png";  // 默认图标
         break;
     }
 
@@ -69,4 +69,5 @@ void Block::setBlockIcon()
     QPixmap pixmap(iconPath);
     this->setIcon(QIcon(pixmap));
     this->setIconSize(pixmap.size());  // 设置图标大小为图片原始大小
+    this->setFlat(true);
 }
