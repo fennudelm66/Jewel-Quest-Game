@@ -9,8 +9,8 @@ class Block : public QPushButton
 
 public:
     // 默认构造函数
-    Block(QWidget *parent = nullptr, int x = -1, int y = -1, int type = 0)
-        : QPushButton(parent), x(x), y(y), type(type)
+    Block(QWidget *parent = nullptr,int type = 0)
+        : QPushButton(parent), type(type)
     {
         // 可选：设置按钮的默认显示文本或图标等
         this->setText(QString("Block(%1, %2)").arg(x).arg(y));

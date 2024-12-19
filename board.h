@@ -2,35 +2,43 @@
 #define BOARD_H
 
 #include "block.h"
-#include <cstddef>
+#include <cstdlib>
 #include <vector>
 
-class Board
-{
+class Board {
 public:
     Board(int rows, int cols);
 
-    void setBlock(int row, int col, const Block& block);
-    Block getBlock(int row, int col);
+    // 设置棋盘上的方块
+    void setBlock(int row, int col, Block* block);
+
+    // 获取棋盘上的方块
+    Block* getBlock(int row, int col);
+
+    // 获取行数和列数
     int getRowCount() const;
     int getColCount() const;
+
+    // 查找可消除的方块
     void findRemovableBlocks(std::vector<std::pair<int, int>>& removableBlocks);
-//从上方生成宝石
+
+    // 从上方生成新方块
     void generateBlock();
+
+    // 消除并填充方块
     void eliminateBlock(int row, int col);
-//玩家选择的宝石交换
+
+    // 交换方块
     void moveBlock();
-// //宝石掉落
-//     void dropBlock();
-//检验操作有效性
+
+    // 检查是否可以交换方块
     bool isActionValid();
 
-
 private:
-    std::vector<std::vector<Block>> grid;
+    std::vector<std::vector<Block*>> grid;  // 存储 Block 指针
     int rows, cols;
-    Block block1 = Block(NULL, NULL);
-    Block block2 = Block(NULL, NULL);
+    Block* block1;  // 选择的第一个方块
+    Block* block2;  // 选择的第二个方块
 };
 
 #endif // BOARD_H
