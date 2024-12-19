@@ -1,35 +1,44 @@
-#include "block.h"
+#ifndef BLOCK_H
+#define BLOCK_H
 
-Block::Block(){
-    x = -1;
-    y = -1;
-    type = 0;
-}
+#include <QPushButton>
 
-Block::Block(int x, int y) :type(0) {
-    this->x = x;
-    this->y = y;
-}
+class Block : public QPushButton
+{
+    Q_OBJECT  // 启用 Qt 信号与槽机制
 
-//获取棋子坐标√
-int Block::getX() const{
-    return x;
-}
+public:
+    // 默认构造函数
+    Block(QWidget *parent = nullptr, int x = -1, int y = -1, int type = 0)
+        : QPushButton(parent), x(x), y(y), type(type)
+    {
+        // 可选：设置按钮的默认显示文本或图标等
+        this->setText(QString("Block(%1, %2)").arg(x).arg(y));
+    }
 
-int Block::getY() const{
-    return y;
-}
+    // 获取棋子坐标
+    int getX() const { return x; }
+    int getY() const { return y; }
 
-//改变棋子位置√
-void Block::setPosition(int newX, int newY){
-    x = newX;
-    y = newY;
-}
+    // 改变棋子位置
+    void setPosition(int newX, int newY)
+    {
+        x = newX;
+        y = newY;
+        // 可选：更新按钮文本
+        this->setText(QString("Block(%1, %2)").arg(x).arg(y));
+    }
 
-int Block::getType() const{
-    return type;
-}
+    // 获取棋子类型
+    int getType() const { return type; }
 
-void Block::setType(int newType){
-    this->type = newType;
-}
+    // 设置棋子类型
+    void setType(int newType) { type = newType; }
+
+private:
+    int type;  // 宝石或道具类型
+    int x, y;  // 坐标
+};
+
+#endif // BLOCK_H
+
