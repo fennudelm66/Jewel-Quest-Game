@@ -29,7 +29,7 @@ LevelSelectWindow::LevelSelectWindow(QWidget *parent)
 
 
     // 创建关卡选择按钮
-    for (int i = 1; i <= 4; ++i) {
+    for (int i = 1; i <= 3; ++i) {
         QPushButton *button = new QPushButton(QString("关卡 %1").arg(i), this);
         layout->addWidget(button);
         button->setStyleSheet("background-color: yellow; color: brown; font: bold 16px;");
