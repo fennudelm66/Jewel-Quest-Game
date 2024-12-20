@@ -6,8 +6,6 @@ Block::Block(QWidget *parent, int type, int x, int y)
     // 设置图标
     setBlockIcon();
 
-    // 可选：设置按钮的默认显示文本或图标等
-    this->setText(QString("Block(%1, %2)").arg(x).arg(y));
 }
 
 // 获取棋子坐标
@@ -26,8 +24,6 @@ void Block::setPosition(int newX, int newY)
 {
     x = newX;
     y = newY;
-    // 更新按钮文本
-    this->setText(QString("Block(%1, %2)").arg(x).arg(y));
 }
 
 // 获取棋子类型
@@ -51,23 +47,33 @@ void Block::setBlockIcon()
     // 根据类型设置对应的图标路径
     switch (type) {
     case 0:
-        iconPath = ":/image/gem0.png";  // type 0 图标
+        iconPath = ":/gem0.png";  // type 0 图标
         break;
     case 1:
-        iconPath = ":/image/gem1.png";  // type 1 图标
+        iconPath = ":/gem1.png";  // type 1 图标
         break;
     case 2:
-        iconPath = ":/image/gem2.png";  // type 2 图标
+        iconPath = ":/gem2.png";  // type 2 图标
         break;
     // 添加更多类型及其图标路径
     default:
-        iconPath = ":/image/default.png";  // 默认图标
+        iconPath = ":/default.png";  // 默认图标
         break;
     }
 
     // 使用图标路径设置按钮的图标
     QPixmap pixmap(iconPath);
-    this->setIcon(QIcon(pixmap));
-    this->setIconSize(pixmap.size());  // 设置图标大小为图片原始大小
+    if (pixmap.isNull()) {
+        qDebug() << "Failed to load image: " << iconPath;
+    }
+    // 缩放图片使其适应指定的大小，保持原始纵横比
+    QSize targetSize(40, 40);  // 目标大小
+    QPixmap scaledPixmap = pixmap.scaled(targetSize, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+
+
+    this->setIcon(QIcon(scaledPixmap));
+    this->setIconSize(targetSize);
+
+
     this->setFlat(true);
 }
