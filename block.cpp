@@ -67,7 +67,7 @@ void Block::setBlockIcon()
         qDebug() << "Failed to load image: " << iconPath;
     }
     // 缩放图片使其适应指定的大小，保持原始纵横比
-    QSize targetSize(40, 40);  // 目标大小
+    QSize targetSize(40, 40);
     QPixmap scaledPixmap = pixmap.scaled(targetSize, Qt::KeepAspectRatio, Qt::SmoothTransformation);
 
 
