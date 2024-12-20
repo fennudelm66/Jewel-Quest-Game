@@ -1,6 +1,7 @@
 release/GameModeWindow.o
 release/block.o
 release/endlessmodewindow.o
+release/levelgame.o
 release/levelselectwindow.o
 release/main.o
 release/mainwindow.o
@@ -8,5 +9,6 @@ release/qrc_pic.o
 release/moc_GameModeWindow.o
 release/moc_block.o
 release/moc_endlessmodewindow.o
+release/moc_levelgame.o
 release/moc_levelselectwindow.o
 release/moc_mainwindow.o

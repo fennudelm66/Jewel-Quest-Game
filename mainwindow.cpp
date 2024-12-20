@@ -2,6 +2,7 @@
 #include "GameModeWindow.h"
 #include "LevelSelectWindow.h"
 #include "EndlessModeWindow.h"
+#include"levelgame.h"
 
 #include <QPushButton>
 #include <QVBoxLayout>
@@ -21,7 +22,7 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
 {
     // 设置窗口大小
-    setFixedSize(400, 700);
+    setFixedSize(500, 800);
 
     // 创建按钮
     QPushButton *startButton = new QPushButton("开始游戏", this);
@@ -65,9 +66,9 @@ MainWindow::MainWindow(QWidget *parent)
     rankingButton->setFixedSize(150,80);
     exitButton->setFixedSize(150,80);
 
-    startButton->move(125, 420);
-    rankingButton->move(125, 510);
-    exitButton->move(125,600);
+    startButton->move(175, 470);
+    rankingButton->move(175, 560);
+    exitButton->move(175,650);
 
     // 创建一个标签用于显示标题
     QLabel *titleLabel = new QLabel("消 消 乐", this);
@@ -80,7 +81,7 @@ MainWindow::MainWindow(QWidget *parent)
     // 设置标签的颜色和样式
     titleLabel->setStyleSheet("color: yellow;");  // 设置文字颜色为番茄红
     layout->addWidget(titleLabel);
-    titleLabel->move(100,150);
+    titleLabel->move(150,150);
     titleLabel->setFixedSize(200,200);
 
     // 创建设置按钮并设置图标
@@ -198,11 +199,11 @@ void MainWindow::startGame(int level)
 {
     // 在这里根据关卡编号进行游戏初始化，可以跳转到新的游戏界面
     qDebug() << "开始游戏，当前关卡是: " << level;
+    // 根据选中的关卡传递给新窗口并初始化
 
-    // 你可以将这个 `level` 传递给游戏主画面窗口进行处理
-    // 例如：
-    // GameWindow *gameWindow = new GameWindow(level, this);
-    // gameWindow->show();
+    this->hide();
+    LevelGame *levelgame = new LevelGame(level, nullptr); // 将level传递给新的窗口
+    levelgame->show();
 }
 
 void MainWindow::onEndlessModeSelected()

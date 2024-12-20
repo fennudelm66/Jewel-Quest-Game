@@ -23,7 +23,7 @@ EndlessModeWindow::EndlessModeWindow(QWidget *parent)
     setWindowTitle("无限模式");
 
     // 设置窗口大小
-    setFixedSize(400, 700);
+    setFixedSize(500, 800);
 
     // 创建布局
     QVBoxLayout *layout = new QVBoxLayout(this);

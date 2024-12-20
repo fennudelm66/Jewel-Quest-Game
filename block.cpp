@@ -51,17 +51,17 @@ void Block::setBlockIcon()
     // 根据类型设置对应的图标路径
     switch (type) {
     case 0:
-        iconPath = ":/image/gem0.png";  // type 0 图标
+        iconPath = ":/gem0.png";  // type 0 图标
         break;
     case 1:
-        iconPath = ":/image/gem1.png";  // type 1 图标
+        iconPath = ":/gem1.png";  // type 1 图标
         break;
     case 2:
-        iconPath = ":/image/gem2.png";  // type 2 图标
+        iconPath = ":/gem2.png";  // type 2 图标
         break;
     // 添加更多类型及其图标路径
     default:
-        iconPath = ":/image/default.png";  // 默认图标
+        iconPath = ":/default.png";  // 默认图标
         break;
     }
 

@@ -12,6 +12,7 @@ SOURCES += \
     GameModeWindow.cpp \
     block.cpp \
     endlessmodewindow.cpp \
+    levelgame.cpp \
     levelselectwindow.cpp \
     main.cpp \
     mainwindow.cpp
@@ -20,6 +21,7 @@ HEADERS += \
     GameModeWindow.h \
     block.h \
     endlessmodewindow.h \
+    levelgame.h \
     levelselectwindow.h \
     mainwindow.h
 
