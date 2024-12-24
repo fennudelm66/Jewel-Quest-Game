@@ -90,9 +90,7 @@ void Board::refreshGrid() {
         }
     }
 
-    // 重新生成 grid 中的所有元素（例如可以使用 generateBlock 或直接填充）
-    // 示例：使用 generateBlock 方法来重新填充 grid
-    generateBlock();  // 假设你已经有类似的生成方法
+    generateBlock();
 }
 
 

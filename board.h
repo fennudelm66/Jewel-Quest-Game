@@ -36,7 +36,10 @@ public:
     // 检查是否可以交换方块
     bool isActionValid();
 
+
 private:
+
+
     std::vector<std::vector<Block*>> grid;  // 存储 Block 指针
     int rows, cols;
     Block* block1;  // 选择的第一个方块
