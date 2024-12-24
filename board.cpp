@@ -78,6 +78,24 @@ void Board::generateBlock() {
     }
 }
 
+void Board::refreshGrid() {
+    // 遍历整个 grid
+    for (int row = 0; row < rows; ++row) {
+        for (int col = 0; col < cols; ++col) {
+            // 如果当前位置有 Block 对象（即非 nullptr），先释放它
+            if (grid[row][col] != nullptr) {
+                delete grid[row][col];  // 删除之前的 Block 对象
+                grid[row][col] = nullptr;  // 将该位置设为 nullptr
+            }
+        }
+    }
+
+    // 重新生成 grid 中的所有元素（例如可以使用 generateBlock 或直接填充）
+    // 示例：使用 generateBlock 方法来重新填充 grid
+    generateBlock();  // 假设你已经有类似的生成方法
+}
+
+
 
 void Board::eliminateBlock(int row, int col) {
     // 删除该位置的方块

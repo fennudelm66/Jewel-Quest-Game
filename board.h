@@ -25,6 +25,8 @@ public:
     // 从上方生成新方块
     void generateBlock();
 
+    void refreshGrid ();
+
     // 消除并填充方块
     void eliminateBlock(int row, int col);
 

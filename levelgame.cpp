@@ -98,7 +98,7 @@ void LevelGame::generateBlocks(int n) {
 
             // 创建 Block，并设置随机类型
             int randomType = QRandomGenerator::global()->bounded(3); // 随机生成 0, 1, 或 2
-            Block *block = new Block(backgroundFrame, randomType, xPos, yPos);  // 将 Block 加入到 backgroundFrame 中
+            Block *block = new Block(this, randomType, xPos, yPos);  // 将 Block 加入到 backgroundFrame 中
 
             // 设置 Block 的大小和位置
             block->setGeometry(xPos, yPos, blockWidth, blockHeight);
