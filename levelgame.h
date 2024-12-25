@@ -4,7 +4,7 @@
 #include <QWidget>
 #include <QLabel>
 #include <QPushButton>
-#include"block.h"
+#include"game.h"
 
 class LevelGame : public QWidget
 {
@@ -20,10 +20,12 @@ private slots:
 private:
     int level;
     int generateNumber;
-    QVector<Block*> blocks;
+    Game game;
     QPushButton *backButton;
-    void generateNumberForLevel();
-    void generateBlocks(int n);
+    void generateBlocks();
+    void onAddButtonClicked();
+    void onChangeButtonClicked();
+    void onBlockClicked(int row, int col);
 
 };
 

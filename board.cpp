@@ -7,13 +7,16 @@ Board::Board(QWidget *parent, int rows, int cols) : QWidget(parent), rows(rows),
     generateBlock();
 }
 
-Block Board::setChosenBlock(int row, int col)
+Block* Board::setChosenBlock(int row, int col)
 {
-    if(row>=0 && col>=0 && row <= rows && col<=cols){
-        return grid[row][col];
+    if(row>=0 && col>=0 && row < rows && col<cols){
+        if(grid[row][col]!=nullptr){
+            qDebug() << "棋子为空";
+            return grid[row][col];
+        }
     }else{
         qDebug() << "超出边界！";
-        return nullptr;
+        return grid[0][0];
     }
 
 }
@@ -98,6 +101,7 @@ void Board::refreshGrid() {
     // 遍历整个 grid
     for (int row = 0; row < rows; ++row) {
         for (int col = 0; col < cols; ++col) {
+
             // 如果当前位置有 Block 对象（即非 nullptr），先释放它
             if (grid[row][col] != nullptr) {
                 delete grid[row][col];  // 删除之前的 Block 对象

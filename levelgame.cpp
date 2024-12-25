@@ -8,12 +8,14 @@
 #include <QRandomGenerator>
 
 LevelGame::LevelGame(int level, QWidget *parent)
-    : QWidget(parent), level(level)
+    : QWidget(parent), level(level),game(this,level)
 {
     // 设置窗口标题
     setWindowTitle("关卡模式");
     // 设置窗口大小
     setFixedSize(500, 800);
+
+    game.board->setGeometry(0,0,800,800);
 
     // 设置背景图片并自适应
     QPixmap backgroundImage(":/LevelBackground.png");  // 你的背景图片路径
@@ -24,8 +26,7 @@ LevelGame::LevelGame(int level, QWidget *parent)
 
 
     // 根据关卡生成数字
-    generateNumberForLevel();
-    generateBlocks(generateNumber);
+    generateBlocks();
 
     // 创建并设置返回按钮
     backButton = new QPushButton("返回", this);
@@ -44,6 +45,7 @@ LevelGame::LevelGame(int level, QWidget *parent)
     addButton->move(150,600);
     // 设置悬停时显示的提示文本
     addButton->setToolTip("增加步数");
+    connect(addButton,&QPushButton::clicked,this,&LevelGame::onAddButtonClicked);
 
     // 创建设置按钮并设置图标
     QPushButton *changeButton = new QPushButton(this);
@@ -54,35 +56,8 @@ LevelGame::LevelGame(int level, QWidget *parent)
     changeButton->setFlat(true);  // 去除按钮的边框和背景
     changeButton->move(250,600);
     changeButton->setToolTip("打乱宝石");
-}
+    connect(changeButton,&QPushButton::clicked,this,&LevelGame::onChangeButtonClicked);
 
-LevelGame::~LevelGame()
-{
-}
-
-void LevelGame::generateNumberForLevel()
-{
-    generateNumber=0;
-
-    // 根据关卡数生成不同的数字
-    switch (level) {
-    case 1:
-        generateNumber = 9;
-        break;
-    case 2:
-        generateNumber = 8;
-        break;
-    case 3:
-        generateNumber = 7;
-        break;
-    default:
-        generateNumber = -1;  // 如果关卡数不在1到3之间，则返回无效数字
-        break;
-    }
-
-}
-
-void LevelGame::generateBlocks(int n) {
 
     // 创建一个背景框 (QFrame)
     QFrame *backgroundFrame = new QFrame(this);
@@ -92,6 +67,17 @@ void LevelGame::generateBlocks(int n) {
 
     // 让背景框不拦截鼠标事件，确保按键可以被点击
     backgroundFrame->setAttribute(Qt::WA_TransparentForMouseEvents);
+
+    backgroundFrame->lower();
+
+
+}
+
+LevelGame::~LevelGame()
+{
+}
+
+void LevelGame::generateBlocks() {
 
     // 定义每个 Block 的大小和间距
     int blockWidth = 40;
@@ -104,35 +90,41 @@ void LevelGame::generateBlocks(int n) {
     int centerY = 330; // 设置中心 Y 坐标
 
     // 计算网格的总宽度和总高度
-    int totalWidth = n * (blockWidth + horizontalSpacing) - horizontalSpacing;  // 网格的总宽度
-    int totalHeight = n * (blockHeight + verticalSpacing) - verticalSpacing;   // 网格的总高度
+    int totalWidth = game.board->getRowCount() * (blockWidth + horizontalSpacing) - horizontalSpacing;  // 网格的总宽度
+    int totalHeight = game.board->getColCount() * (blockHeight + verticalSpacing) - verticalSpacing;   // 网格的总高度
 
     // 计算起始位置，使得整个网格居中
     int startX = centerX - totalWidth / 2;  // 左上角的 x 坐标
     int startY = centerY - totalHeight / 2; // 左上角的 y 坐标
 
-    // 存储 Block 对象指针
-    blocks.clear();  // 清空现有 Block
-
     // 创建 n * n 的 Block 网格，并手动计算位置
-    for (int i = 0; i < n; ++i) {
-        for (int j = 0; j < n; ++j) {
+    for (int i = 0; i < game.board->getRowCount(); ++i) {
+        for (int j = 0; j < game.board->getColCount(); ++j) {
             // 计算每个 Block 的坐标
             int xPos = startX + j * (blockWidth + horizontalSpacing);
             int yPos = startY + i * (blockHeight + verticalSpacing);
-
-            // 创建 Block，并设置随机类型
-            int randomType = QRandomGenerator::global()->bounded(3); // 随机生成 0, 1, 或 2
-            Block *block = new Block(this, randomType, xPos, yPos);  // 将 Block 加入到背景中
-
-            // 设置 Block 的大小和位置
-            block->setGeometry(xPos, yPos, blockWidth, blockHeight);
-
-            // 存储 Block 对象
-            blocks.append(block);
+            if(game.board->getBlock(i,j) == nullptr)
+                qDebug() << "Failed to load block: " ;
+            // 设置Block的大小和位置
+            game.board->getBlock(i,j)->setGeometry(xPos, yPos, blockWidth, blockHeight);
+            // 连接信号与槽函数
+            connect(game.board->getBlock(i,j), &QPushButton::clicked, [this, i, j]() {
+                onBlockClicked(i, j);
+            });
         }
-    }
+}
+}
 
+void LevelGame::onAddButtonClicked()
+{
+
+}
+
+void LevelGame::onChangeButtonClicked()
+{
+    game.board->refreshGrid();
+    generateBlocks();
+    game.board->repaint();
 }
 
 
@@ -144,4 +136,33 @@ void LevelGame::onBackButtonClicked()
     // 显示 MainWindow 窗口
     MainWindow *mainWindow = new MainWindow();
     mainWindow->show();
+}
+
+void LevelGame::onBlockClicked(int row, int col)
+{
+    // 如果 block1 为空，则设置为点击的方块
+    if (game.board->block1 == nullptr) {
+        game.board->block1 = game.board->setChosenBlock(row, col);
+        qDebug()<<"选择1成功";
+    }
+    // 如果 block1 不为空，且 block2 为空，则设置为点击的方块
+    else if (game.board->block2 == nullptr) {
+        game.board->block2 = game.board->setChosenBlock(row, col);
+        qDebug()<<"选择2成功";
+    }
+
+    // 如果 block2 已经选择，检查交换是否有效
+    if (game.board->block1 != nullptr && game.board->block2 != nullptr) {
+        if (game.board->isActionValid()) {
+            // 如果交换有效，查找可消除的方块
+            game.findRemovableBlocks();
+        }
+        else {
+            // 如果交换无效，清空 block2 并重新选择新的 block2
+            game.board->block2 = nullptr;
+            game.board->block1 = game.board->setChosenBlock(row, col);
+            game.board->generateBlock();  // 生成新的方块
+        }
+
+}
 }

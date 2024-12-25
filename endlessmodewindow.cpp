@@ -109,6 +109,7 @@ EndlessModeWindow::EndlessModeWindow(QWidget *parent)
 
     // 让背景框不拦截鼠标事件，确保按键可以被点击
     backgroundFrame->setAttribute(Qt::WA_TransparentForMouseEvents);
+    backgroundFrame->lower();
 
     // 定义每个Block的大小和间距
     int blockWidth = 40;

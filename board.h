@@ -15,7 +15,7 @@ public:
     void setBlock(int row, int col, Block* block);
 
     //用户选择方块
-    Block setChosenBlock(int row, int col);
+    Block* setChosenBlock(int row, int col);
 
     // 获取棋盘上的方块
     Block* getBlock(int row, int col);
@@ -40,14 +40,13 @@ public:
 
     // 检查是否可以交换方块
     bool isActionValid();
-
-
-private:
-
-    std::vector<std::vector<Block*>> grid;  // 存储 Block 指针
-    int rows, cols;
     Block* block1;  // 选择的第一个方块
     Block* block2;  // 选择的第二个方块
+
+private:
+    std::vector<std::vector<Block*>> grid;  // 存储 Block 指针
+    int rows, cols;
+
 };
 
 #endif // BOARD_H
