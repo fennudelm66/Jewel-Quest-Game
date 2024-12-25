@@ -24,6 +24,7 @@ private slots:
     void onStageModeSelected();
     void onEndlessModeSelected();
     void onLevelSelected(int level);  // 处理选择关卡的信号
+    void onSettingsClicked();
 
 private:
     void startGame(int level);  // 根据关卡开始游戏

@@ -2,7 +2,9 @@
 #include "GameModeWindow.h"
 #include "LevelSelectWindow.h"
 #include "EndlessModeWindow.h"
+#include "GameSettingsWindow.h"
 #include"levelgame.h"
+
 
 #include <QPushButton>
 #include <QVBoxLayout>
@@ -94,6 +96,7 @@ MainWindow::MainWindow(QWidget *parent)
     // 将按钮放置在右上角
     settingsButton->move(width() - settingsButton->width() - 10, 10);
 
+    connect(settingsButton,&QPushButton::clicked,this,&MainWindow::onSettingsClicked);
     connect(exitButton, &QPushButton::clicked, this, &MainWindow::onExitClicked);
     connect(startButton,&QPushButton::clicked,this,&MainWindow::onStartClicked);
 
@@ -216,4 +219,42 @@ void MainWindow::onEndlessModeSelected()
     // 创建并显示新的窗口
     EndlessModeWindow *endlessWindow = new EndlessModeWindow(nullptr);
     endlessWindow->show();
+}
+
+void MainWindow::onSettingsClicked()
+{
+    // 创建并显示 SettingsWindow
+    GameSettingsWindow *settingsWindow = new GameSettingsWindow(this);
+
+    // 获取目标位置
+    int targetX = (this->width() - settingsWindow->width()) / 2;
+    int targetY = (this->height() - settingsWindow->height()) / 2;
+
+    // 设置初始位置为屏幕上方
+    settingsWindow->move(targetX, -settingsWindow->height());
+
+    // 创建透明度效果并应用到窗口
+    QGraphicsOpacityEffect *opacityEffect = new QGraphicsOpacityEffect(settingsWindow);
+    settingsWindow->setGraphicsEffect(opacityEffect);
+
+    // 创建并配置透明度动画
+    QPropertyAnimation *opacityAnimation = new QPropertyAnimation(opacityEffect, "opacity");
+    opacityAnimation->setDuration(500);  // 动画持续时间
+    opacityAnimation->setStartValue(0.0);  // 初始透明度为 0（完全透明）
+    opacityAnimation->setEndValue(1.0);    // 最终透明度为 1（完全不透明）
+
+    // 创建位置动画，使窗口下落
+    QPropertyAnimation *positionAnimation = new QPropertyAnimation(settingsWindow, "pos");
+    positionAnimation->setDuration(500);
+    positionAnimation->setStartValue(QPoint(targetX, -settingsWindow->height()));
+    positionAnimation->setEndValue(QPoint(targetX, targetY));
+
+    // 并行启动两个动画
+    opacityAnimation->start();
+    positionAnimation->start();
+
+    // 显示窗口
+    settingsWindow->show();
+
+
 }
