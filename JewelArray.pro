@@ -18,6 +18,7 @@ SOURCES += \
     board.cpp \
     endlessmodewindow.cpp \
     game.cpp \
+    gameendwindow.cpp \
     gamemodeWindow.cpp \
     levelgame.cpp \
     levelselectwindow.cpp \
@@ -29,6 +30,7 @@ HEADERS += \
     board.h \
     endlessmodewindow.h \
     game.h \
+    gameendwindow.h \
     gamemodeWindow.h \
     inputmanager.h \
     levelgame.h \

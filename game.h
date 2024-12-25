@@ -3,12 +3,12 @@
 
 #include "board.h"
 
-class Game
-{
+class Game : public QWidget {  // 确保 Game 继承自 QWidget
+    Q_OBJECT
 public:
-    Game(int level);
+    Game(QWidget *parent, int level);
 
-    Board board = Board(0, 0);
+    Board board;
 //消除方块
     void findRemovableBlocks();
     void changePoints(int increment);

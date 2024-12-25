@@ -20,8 +20,9 @@ EndlessModeWindow::EndlessModeWindow(QWidget *parent)
     opacityAnimation(new QPropertyAnimation(opacityEffect, "opacity", this)),
     countdownTimer(new QTimer(this)),
     timeLeft(5),  // 初始化为5分钟（300秒
-    game(1)
+    game(this, 1)
 {
+
     setWindowTitle("无限模式");
 
     // 设置窗口大小
@@ -119,12 +120,13 @@ EndlessModeWindow::EndlessModeWindow(QWidget *parent)
     int startY = 140;
 
     // 创建8x8的Block，并手动计算位置
-    for (int i = 0; i < 8; ++i) {
-        for (int j = 0; j < 8; ++j) {
+    for (int i = 0; i < game.board.getRowCount(); ++i) {
+        for (int j = 0; j < game.board.getColCount(); ++j) {
             // 计算每个Block的坐标
             int xPos = startX + j * (blockWidth + horizontalSpacing);
             int yPos = startY + i * (blockHeight + verticalSpacing);
-
+            if(game.board.getBlock(i,j) == nullptr)
+                qDebug() << "Failed to load block: " ;
             // 设置Block的大小和位置
             game.board.getBlock(i,j)->setGeometry(xPos, yPos, blockWidth, blockHeight);
 

@@ -7,7 +7,7 @@
 
 class Board {
 public:
-    Board(int rows, int cols);
+    Board(QWidget *parent, int rows, int cols);
 
     // 设置棋盘上的方块
     void setBlock(int row, int col, Block* block);

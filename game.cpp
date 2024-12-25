@@ -2,7 +2,8 @@
 #include <ostream>
 #include <iostream>
 
-Game::Game(int level): level(level) {
+Game::Game(QWidget *parent, int level)
+    : QWidget(parent), level(level), board(parent, 0, 0) {  // 在初始化列表中初始化 board
     initializeBoard();
     initializeGoalSteps();
 }
@@ -20,7 +21,8 @@ void Game::initializeBoard(){
         cols = 10;
         break;
     }
-    board = Board(rows,cols);
+    board = Board(this, rows, cols);
+    qDebug() << "已创建棋盘";
 }
 
 //初始化过关条件√

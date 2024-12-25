@@ -1,8 +1,9 @@
 #include "board.h"
 
 
-Board::Board(int rows, int cols) : rows(rows), cols(cols) {
+Board::Board(QWidget *parent, int rows, int cols) : rows(rows), cols(cols) {
     grid.resize(rows, std::vector<Block*>(cols, nullptr));
+    generateBlock();
 }
 
 void Board::setBlock(int row, int col, Block* block) {
@@ -66,16 +67,17 @@ void Board::findRemovableBlocks(std::vector<std::pair<int, int>>& removableBlock
 
 void Board::generateBlock() {
     for (int col = 0; col < cols; ++col) {
-        bool foundEmpty = false;
+        // bool foundEmpty = false;
         for (int row = 0; row < rows; ++row) {
             if (grid[row][col] == nullptr) {  // 找到空位
                 // 创建一个新的 Block 对象，并将其指针存储在 grid 中
-                grid[row][col] = new Block(nullptr,rand() % 3 + 1);  // 传入随机类型（1, 2, 或 3）
-                foundEmpty = true;
-                break;
+                grid[row][col] = new Block(nullptr,rand() % 3 + 1, row, col);  // 传入随机类型（1, 2, 或 3）
+                // foundEmpty = true;
+                // break;
             }
         }
     }
+    qDebug() << "已生成方块";
 }
 
 void Board::refreshGrid() {

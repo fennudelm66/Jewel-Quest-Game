@@ -33,6 +33,7 @@ private:
     Game game;
 
 
+
 private slots:
     void onStartButtonClicked();
 
