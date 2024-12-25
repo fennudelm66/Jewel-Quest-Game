@@ -7,6 +7,8 @@ class Game
 {
 public:
     Game(int level);
+
+    Board board = Board(0, 0);
 //消除方块
     void findRemovableBlocks();
     void changePoints(int increment);
@@ -44,8 +46,6 @@ private:
     int status;
     int goal;
     int steps;
-    Board board = Board(0, 0);
-
 
     // 游戏状态历史记录
     std::vector<GameState> history;
