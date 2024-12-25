@@ -1,7 +1,8 @@
 #include "board.h"
 
 
-Board::Board(QWidget *parent, int rows, int cols) : rows(rows), cols(cols) {
+Board::Board(QWidget *parent, int rows, int cols) : QWidget(parent), rows(rows), cols(cols) {
+
     grid.resize(rows, std::vector<Block*>(cols, nullptr));
     generateBlock();
 }
@@ -71,7 +72,8 @@ void Board::generateBlock() {
         for (int row = 0; row < rows; ++row) {
             if (grid[row][col] == nullptr) {  // 找到空位
                 // 创建一个新的 Block 对象，并将其指针存储在 grid 中
-                grid[row][col] = new Block(nullptr,rand() % 3 + 1, row, col);  // 传入随机类型（1, 2, 或 3）
+                grid[row][col] = new Block(this,2, row, col);  // 传入随机类型（1, 2, 或 3）
+                //grid[row][col]->move(row*80,col*80);
                 // foundEmpty = true;
                 // break;
             }

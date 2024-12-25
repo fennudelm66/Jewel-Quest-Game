@@ -13,6 +13,7 @@ CONFIG += c++17
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    GameSettingsWindow.cpp \
     InputManager.cpp \
     block.cpp \
     board.cpp \
@@ -26,6 +27,7 @@ SOURCES += \
     mainwindow.cpp
 
 HEADERS += \
+    GameSettingsWindow.h \
     block.h \
     board.h \
     endlessmodewindow.h \

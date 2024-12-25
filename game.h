@@ -7,8 +7,7 @@ class Game : public QWidget {
     Q_OBJECT
 public:
     Game(QWidget *parent, int level);
-
-    Board board;
+    Board *board;
 //消除方块
     void findRemovableBlocks();
     void changePoints(int increment);

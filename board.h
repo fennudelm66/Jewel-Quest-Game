@@ -5,8 +5,10 @@
 #include <cstdlib>
 #include <vector>
 
-class Board {
+class Board : public QWidget {
 public:
+    QWidget *parent;
+
     Board(QWidget *parent, int rows, int cols);
 
     // 设置棋盘上的方块

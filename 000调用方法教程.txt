@@ -1,0 +1,16 @@
+点击按钮
+若game.board.block1为空
+调用game.board.setChosenBlock(row,col)方法：
+game.board.block1 = game.board.setChosenBlock1(row,col)
+否则
+game.board.block2 = game.board.setChosenBlock2(row,col)
+并且调用game.board.isActionValid()方法
+若返回值为真
+调用game.findRemovableBlocks()方法####看清楚是game的方法
+否则
+game.board.block2 = nullptr
+game.board.block1 = game.board.setChosenBlock2(row,col)
+然后调用game.board.generateBlock()方法
+这就是玩家操作后的步骤
+想要实现棋盘上连续的自动消除只需每刷新一帧都调用game.findRemovableBlocks()方法即可
+刷新道具用game.board.refreshGrid()方法

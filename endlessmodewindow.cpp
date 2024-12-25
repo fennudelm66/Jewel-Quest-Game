@@ -22,6 +22,7 @@ EndlessModeWindow::EndlessModeWindow(QWidget *parent)
     timeLeft(5),  // 初始化为5分钟（300秒
     game(this, 1)
 {
+    game.board->setGeometry(0,0,500,800);
 
     setWindowTitle("无限模式");
 
@@ -120,15 +121,15 @@ EndlessModeWindow::EndlessModeWindow(QWidget *parent)
     int startY = 140;
 
     // 创建8x8的Block，并手动计算位置
-    for (int i = 0; i < game.board.getRowCount(); ++i) {
-        for (int j = 0; j < game.board.getColCount(); ++j) {
+    for (int i = 0; i < game.board->getRowCount(); ++i) {
+        for (int j = 0; j < game.board->getColCount(); ++j) {
             // 计算每个Block的坐标
             int xPos = startX + j * (blockWidth + horizontalSpacing);
             int yPos = startY + i * (blockHeight + verticalSpacing);
-            if(game.board.getBlock(i,j) == nullptr)
+            if(game.board->getBlock(i,j) == nullptr)
                 qDebug() << "Failed to load block: " ;
             // 设置Block的大小和位置
-            game.board.getBlock(i,j)->setGeometry(xPos, yPos, blockWidth, blockHeight);
+            game.board->getBlock(i,j)->setGeometry(xPos, yPos, blockWidth, blockHeight);
         }
     }
 }

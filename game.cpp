@@ -3,7 +3,8 @@
 #include <iostream>
 
 Game::Game(QWidget *parent, int level)
-    : QWidget(parent), level(level), board(parent, 0, 0) {  // 在初始化列表中初始化 board
+    : QWidget(parent), level(level){  // 在初始化列表中初始化 board
+
     initializeBoard();
     initializeGoalSteps();
 }
@@ -21,7 +22,7 @@ void Game::initializeBoard(){
         cols = 10;
         break;
     }
-    board = Board(this, rows, cols);
+    board = new Board(this->parentWidget(), rows, cols);
     qDebug() << "已创建棋盘";
 }
 
@@ -47,7 +48,7 @@ void Game::initializeGoalSteps(){
 void Game::findRemovableBlocks() {
     // 获取可消除方块的坐标列表
     std::vector<std::pair<int, int>> removableBlocks;
-    board.findRemovableBlocks(removableBlocks);
+    board->findRemovableBlocks(removableBlocks);
 
     // 如果有可消除的方块
     if (!removableBlocks.empty()) {
@@ -56,7 +57,7 @@ void Game::findRemovableBlocks() {
             int row = block.first;
             int col = block.second;
             // 执行消除方块的逻辑
-            board.eliminateBlock(row, col);
+            board->eliminateBlock(row, col);
         }
 
         // 消除后可以进行积分、更新步骤等操作
@@ -104,10 +105,10 @@ void Game::recordState() {
     state.steps = steps;
     state.status = status;
     // 记录当前棋盘状态
-    for (int row = 0; row < board.getRowCount(); ++row) {
-        for (int col = 0; col < board.getColCount(); ++col) {
+    for (int row = 0; row < board->getRowCount(); ++row) {
+        for (int col = 0; col < board->getColCount(); ++col) {
             // 假设 board.grid 是一个二维数组
-            state.grid[row][col] = board.getBlock(row, col);  // 你可以根据实际情况调用相应的方法
+            state.grid[row][col] = board->getBlock(row, col);  // 你可以根据实际情况调用相应的方法
         }
     }
 
@@ -132,10 +133,10 @@ void Game::revertToLastState() {
     points = lastState.points;
     steps = lastState.steps;
     status = lastState.status;
-    for (int row = 0; row < board.getRowCount(); ++row) {
-        for (int col = 0; col < board.getColCount(); ++col) {
+    for (int row = 0; row < board->getRowCount(); ++row) {
+        for (int col = 0; col < board->getColCount(); ++col) {
             // 假设 board.grid 是一个二维数组
-            board.setBlock(row, col, lastState.grid[row][col]);  // 你可以根据实际情况调用相应的方法
+            board->setBlock(row, col, lastState.grid[row][col]);  // 你可以根据实际情况调用相应的方法
         }
     }
 
