@@ -3,6 +3,7 @@ release/GameSettingsWindow.o
 release/audiomanager.o
 release/block.o
 release/endlessmodewindow.o
+release/levelgame.o
 release/levelselectwindow.o
 release/levelgame.o
 release/main.o

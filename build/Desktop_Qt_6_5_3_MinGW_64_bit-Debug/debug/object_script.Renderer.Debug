@@ -3,6 +3,7 @@ debug/GameSettingsWindow.o
 debug/audiomanager.o
 debug/block.o
 debug/endlessmodewindow.o
+debug/levelgame.o
 debug/levelselectwindow.o
 debug/levelgame.o
 debug/main.o
