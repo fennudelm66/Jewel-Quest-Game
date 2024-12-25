@@ -1,4 +1,5 @@
 QT       += core gui
+QT += multimedia
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -10,16 +11,22 @@ CONFIG += c++17
 
 SOURCES += \
     GameModeWindow.cpp \
+    GameSettingsWindow.cpp \
+    audiomanager.cpp \
     block.cpp \
     endlessmodewindow.cpp \
     levelselectwindow.cpp \
+    levelgame.cpp \
     main.cpp \
     mainwindow.cpp
 
 HEADERS += \
     GameModeWindow.h \
+    GameSettingsWindow.h \
+    audiomanager.h \
     block.h \
     endlessmodewindow.h \
+    levelgame.h \
     levelselectwindow.h \
     mainwindow.h
 
