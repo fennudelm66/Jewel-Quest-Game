@@ -16,17 +16,23 @@ SOURCES += \
     InputManager.cpp \
     block.cpp \
     board.cpp \
+    endlessmodewindow.cpp \
     game.cpp \
     gamemodeWindow.cpp \
+    levelgame.cpp \
+    levelselectwindow.cpp \
     main.cpp \
     mainwindow.cpp
 
 HEADERS += \
     block.h \
     board.h \
+    endlessmodewindow.h \
     game.h \
     gamemodeWindow.h \
     inputmanager.h \
+    levelgame.h \
+    levelselectwindow.h \
     mainwindow.h
 
 FORMS += \

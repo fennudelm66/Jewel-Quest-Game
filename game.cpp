@@ -1,4 +1,6 @@
 #include "game.h"
+#include <ostream>
+#include <iostream>
 
 Game::Game(int level): level(level) {
     initializeBoard();
@@ -84,4 +86,61 @@ int Game::isGameOver(){
     }
     return 0;
 
+}
+
+void Game::limitHistorySize() {
+    if (history.size() > 10) {
+        history.erase(history.begin());  // 删除最旧的记录
+    }
+}
+
+
+
+void Game::recordState() {
+    GameState state;
+    state.points = points;
+    state.steps = steps;
+    state.status = status;
+    // 记录当前棋盘状态
+    for (int row = 0; row < board.getRowCount(); ++row) {
+        for (int col = 0; col < board.getColCount(); ++col) {
+            // 假设 board.grid 是一个二维数组
+            state.grid[row][col] = board.getBlock(row, col);  // 你可以根据实际情况调用相应的方法
+        }
+    }
+
+    history.push_back(state);  // 添加到历史记录
+
+    // 限制历史记录最多存储10个元素
+    limitHistorySize();
+}
+
+// 在 Game 类中添加此方法
+void Game::revertToLastState() {
+    // 检查是否有历史记录
+    if (history.empty()) {
+        std::cout << "没有历史记录，无法恢复状态！" << std::endl;
+        return;  // 如果没有历史记录，直接返回
+    }
+
+    // 获取历史记录中的最后一个状态
+    GameState lastState = history.back();
+
+    // 恢复游戏状态
+    points = lastState.points;
+    steps = lastState.steps;
+    status = lastState.status;
+    for (int row = 0; row < board.getRowCount(); ++row) {
+        for (int col = 0; col < board.getColCount(); ++col) {
+            // 假设 board.grid 是一个二维数组
+            board.setBlock(row, col, lastState.grid[row][col]);  // 你可以根据实际情况调用相应的方法
+        }
+    }
+
+    // 删除历史记录中的最后一个状态
+    history.pop_back();
+
+    // 输出恢复后的状态（可选）
+    std::cout << "游戏状态已恢复至最后一个历史记录。" << std::endl;
+    std::cout << "得分: " << points << ", 步数: " << steps << ", 状态: " << status << std::endl;
 }

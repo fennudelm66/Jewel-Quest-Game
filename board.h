@@ -25,6 +25,8 @@ public:
     // 从上方生成新方块
     void generateBlock();
 
+    void refreshGrid ();
+
     // 消除并填充方块
     void eliminateBlock(int row, int col);
 
@@ -34,7 +36,10 @@ public:
     // 检查是否可以交换方块
     bool isActionValid();
 
+
 private:
+
+
     std::vector<std::vector<Block*>> grid;  // 存储 Block 指针
     int rows, cols;
     Block* block1;  // 选择的第一个方块
