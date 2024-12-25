@@ -14,6 +14,9 @@ public:
     // 设置棋盘上的方块
     void setBlock(int row, int col, Block* block);
 
+    //用户选择方块
+    Block setChosenBlock(int row, int col);
+
     // 获取棋盘上的方块
     Block* getBlock(int row, int col);
 

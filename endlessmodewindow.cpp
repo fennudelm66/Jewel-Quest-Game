@@ -22,7 +22,7 @@ EndlessModeWindow::EndlessModeWindow(QWidget *parent)
     timeLeft(5),  // 初始化为5分钟（300秒
     game(this, 1)
 {
-    game.board->setGeometry(0,0,500,800);
+    game.board->setGeometry(0,0,800,800);
 
     setWindowTitle("无限模式");
 

@@ -7,6 +7,18 @@ Board::Board(QWidget *parent, int rows, int cols) : QWidget(parent), rows(rows),
     generateBlock();
 }
 
+Block Board::setChosenBlock(int row, int col)
+{
+    if(row>=0 && col>=0 && row <= rows && col<=cols){
+        return grid[row][col];
+    }else{
+        qDebug() << "超出边界！";
+        return nullptr;
+    }
+
+}
+
+
 void Board::setBlock(int row, int col, Block* block) {
     // 确保删除旧的 Block 对象（如果有的话）
     if (grid[row][col] != nullptr) {
@@ -72,7 +84,7 @@ void Board::generateBlock() {
         for (int row = 0; row < rows; ++row) {
             if (grid[row][col] == nullptr) {  // 找到空位
                 // 创建一个新的 Block 对象，并将其指针存储在 grid 中
-                grid[row][col] = new Block(this,2, row, col);  // 传入随机类型（1, 2, 或 3）
+                grid[row][col] = new Block(this,rand()%3 + 1, row, col);  // 传入随机类型（1, 2, 或 3）
                 //grid[row][col]->move(row*80,col*80);
                 // foundEmpty = true;
                 // break;
