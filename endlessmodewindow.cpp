@@ -1,4 +1,5 @@
 #include "EndlessModeWindow.h"
+#include"mainwindow.h"
 #include <QVBoxLayout>
 #include <QGraphicsOpacityEffect>
 #include <QPropertyAnimation>
@@ -18,7 +19,8 @@ EndlessModeWindow::EndlessModeWindow(QWidget *parent)
     opacityEffect(new QGraphicsOpacityEffect(this)),
     opacityAnimation(new QPropertyAnimation(opacityEffect, "opacity", this)),
     countdownTimer(new QTimer(this)),
-    timeLeft(300)  // 初始化为5分钟（300秒）
+    timeLeft(5),  // 初始化为5分钟（300秒
+    game(1)
 {
     setWindowTitle("无限模式");
 
@@ -66,6 +68,46 @@ EndlessModeWindow::EndlessModeWindow(QWidget *parent)
     // 显示弹窗
     showStartDialog();
 
+    // 创建并设置返回按钮
+    QPushButton *backButton;
+    backButton = new QPushButton("返回", this);
+    backButton->setGeometry(15, 50, 100, 40);  // 设置按钮的位置和大小
+    backButton->setStyleSheet("background-color: yellow; color: brown; font: bold 16px;");
+    connect(backButton, &QPushButton::clicked, this, &EndlessModeWindow::onBackButtonClicked);
+
+    // 创建设置按钮并设置图标
+    QPushButton *addButton = new QPushButton(this);
+    QIcon addIcon(":/add.png");  // 设置按钮图标
+    addButton->setIcon(addIcon);
+    addButton->setIconSize(QSize(100, 100));  // 设置图标大小
+    addButton->setFixedSize(100,100);
+    addButton->setFlat(true);  // 去除按钮的边框和背景
+    addButton->move(150,600);
+    // 设置悬停时显示的提示文本
+    addButton->setToolTip("增加时间");
+    connect(addButton,&QPushButton::clicked,this,&EndlessModeWindow::onAddButtonClicked);
+
+    // 创建设置按钮并设置图标
+    QPushButton *changeButton = new QPushButton(this);
+    QIcon changeIcon(":/change.png");  // 设置按钮图标
+    changeButton->setIcon(changeIcon);
+    changeButton->setIconSize(QSize(100, 100));  // 设置图标大小
+    changeButton->setFixedSize(100,100);
+    changeButton->setFlat(true);  // 去除按钮的边框和背景
+    changeButton->move(250,600);
+    changeButton->setToolTip("打乱宝石");
+
+
+
+    // 创建一个背景框 (QFrame)
+    QFrame *backgroundFrame = new QFrame(this);
+    backgroundFrame->setGeometry(50, 130, 370, 370);  // 设置背景框的大小和位置
+    // 设置背景框的样式为黑色半透明
+    backgroundFrame->setStyleSheet("background-color: rgba(0, 0, 0, 0.5)");
+
+    // 让背景框不拦截鼠标事件，确保按键可以被点击
+    backgroundFrame->setAttribute(Qt::WA_TransparentForMouseEvents);
+
     // 定义每个Block的大小和间距
     int blockWidth = 40;
     int blockHeight = 40;
@@ -73,11 +115,8 @@ EndlessModeWindow::EndlessModeWindow(QWidget *parent)
     int verticalSpacing = 5;
 
     // 定义第一个Block的位置
-    int startX = 25;
-    int startY = 130;
-
-    // 存储Block对象指针
-    blocks.clear(); // 清空现有Block
+    int startX = 60;
+    int startY = 140;
 
     // 创建8x8的Block，并手动计算位置
     for (int i = 0; i < 8; ++i) {
@@ -86,17 +125,9 @@ EndlessModeWindow::EndlessModeWindow(QWidget *parent)
             int xPos = startX + j * (blockWidth + horizontalSpacing);
             int yPos = startY + i * (blockHeight + verticalSpacing);
 
-            // 创建Block，并设置随机类型
-            int randomType = QRandomGenerator::global()->bounded(3); // 随机生成0, 1, 或 2
-            Block *block = new Block(this, randomType, xPos, yPos);
-
             // 设置Block的大小和位置
-            block->setGeometry(xPos, yPos, blockWidth, blockHeight);
+            game.board.getBlock(i,j)->setGeometry(xPos, yPos, blockWidth, blockHeight);
 
-            // 存储Block对象
-            blocks.append(block);
-
-            // 如果需要，可以在这里做其他操作（例如设置信号槽等）
         }
     }
 }
@@ -109,10 +140,6 @@ EndlessModeWindow::~EndlessModeWindow()
     delete opacityEffect;
     delete countdownLabel;
     delete imageLabel;
-
-    // 清理动态分配的Block
-    qDeleteAll(blocks);
-    blocks.clear();
 
 }
 
@@ -157,6 +184,23 @@ void EndlessModeWindow::showStartDialog()
 
 }
 
+void EndlessModeWindow::onBackButtonClicked()
+{
+    // 隐藏当前 LevelGame 窗口
+    this->hide();
+
+    // 显示 MainWindow 窗口
+    MainWindow *mainWindow = new MainWindow();
+    mainWindow->show();
+
+}
+
+void EndlessModeWindow::onAddButtonClicked()
+{
+    timeLeft+=10;
+
+}
+
 void EndlessModeWindow::onStartButtonClicked()
 {
     // 启动倒计时
@@ -177,6 +221,11 @@ void EndlessModeWindow::updateCountdown()
     } else {
         countdownTimer->stop();
         countdownLabel->setText("时间到！");
-        // 可以在这里添加时间结束后的处理代码，比如结束游戏等。
+        // 显示“时间到！”的图片和文字动画
+
+        // 弹出无尽模式结束窗口
+        GameEndWindow *endWindow = new GameEndWindow(GameEndWindow::EndlessMode, this);
+        endWindow->exec();
     }
 }
+

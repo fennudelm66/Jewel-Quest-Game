@@ -9,6 +9,8 @@
 #include <QTimer>
 #include <QVector>
 #include "block.h"
+#include"gameendwindow.h"
+#include"game.h"
 
 class EndlessModeWindow : public QWidget
 {
@@ -28,14 +30,17 @@ private:
     QTimer *countdownTimer;
     int timeLeft;  // 剩余时间（秒）
 
-    QVector<Block*> blocks;  // 存储所有Block的指针
+    Game game;
 
 
 private slots:
     void onStartButtonClicked();
+
+private:
     void updateCountdown();
     void showStartDialog();
-
+    void onBackButtonClicked();
+    void onAddButtonClicked();
 };
 
 #endif // ENDLESSMODEWINDOW_H
