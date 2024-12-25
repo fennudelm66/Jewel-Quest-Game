@@ -5,7 +5,6 @@ Block::Block(QWidget *parent, int type, int x, int y)
 {
     // 设置图标
     setBlockIcon();
-
 }
 
 // 获取棋子坐标

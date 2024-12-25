@@ -39,7 +39,6 @@ public:
 
 private:
 
-
     std::vector<std::vector<Block*>> grid;  // 存储 Block 指针
     int rows, cols;
     Block* block1;  // 选择的第一个方块

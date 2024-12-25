@@ -129,7 +129,6 @@ EndlessModeWindow::EndlessModeWindow(QWidget *parent)
                 qDebug() << "Failed to load block: " ;
             // 设置Block的大小和位置
             game.board.getBlock(i,j)->setGeometry(xPos, yPos, blockWidth, blockHeight);
-
         }
     }
 }

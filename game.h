@@ -3,7 +3,7 @@
 
 #include "board.h"
 
-class Game : public QWidget {  // 确保 Game 继承自 QWidget
+class Game : public QWidget {
     Q_OBJECT
 public:
     Game(QWidget *parent, int level);

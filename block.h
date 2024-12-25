@@ -10,6 +10,7 @@ class Block : public QPushButton
     Q_OBJECT  // 启用 Qt 信号与槽机制
 
 public:
+
     // 默认构造函数
     Block(QWidget *parent = nullptr, int type = 0, int x = 0, int y = 0);
 
