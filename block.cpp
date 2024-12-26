@@ -57,6 +57,12 @@ void Block::setBlockIcon()
     case 3:
         iconPath = ":/gem3.png";  // type 3 图标
         break;
+    case 4 :
+        iconPath = ":/gem4.png";  // type 4 图标
+        break;
+    case 5:
+        iconPath = ":/gem5.png";  // type 5 图标
+        break;
     default:
         iconPath = ":/default.png";  // 默认图标
         break;

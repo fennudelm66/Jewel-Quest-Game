@@ -18,7 +18,6 @@ SOURCES += \
     audiomanager.cpp \
     block.cpp \
     board.cpp \
-    database.cpp \
     endlessmodewindow.cpp \
     game.cpp \
     gameendwindow.cpp \

@@ -98,6 +98,9 @@ LevelGame::~LevelGame()
 
 void LevelGame::generateBlocks() {
 
+    game.board->generateBlock();
+    qDebug() << "调用level的generateBlocks方法啦";
+
     // 定义每个 Block 的大小和间距
     int blockWidth = 40;
     int blockHeight = 40;
@@ -116,6 +119,9 @@ void LevelGame::generateBlocks() {
     int startX = centerX - totalWidth / 2;  // 左上角的 x 坐标
     int startY = centerY - totalHeight / 2; // 左上角的 y 坐标
 
+    game.board->setGeometry(0,0,800,800);
+    game.board->update();
+
     // 创建 n * n 的 Block 网格，并手动计算位置
     for (int i = 0; i < game.board->getRowCount(); ++i) {
         for (int j = 0; j < game.board->getColCount(); ++j) {
@@ -123,15 +129,17 @@ void LevelGame::generateBlocks() {
             int xPos = startX + j * (blockWidth + horizontalSpacing);
             int yPos = startY + i * (blockHeight + verticalSpacing);
             if(game.board->getBlock(i,j) == nullptr)
-                qDebug() << "Failed to load block: " ;
-            // 设置Block的大小和位置
-            game.board->getBlock(i,j)->setGeometry(xPos, yPos, blockWidth, blockHeight);
-            // 连接信号与槽函数
-            connect(game.board->getBlock(i,j), &QPushButton::clicked, [this, i, j]() {
-                onBlockClicked(i, j);
-            });
+            {    qDebug() << "Failed to load block: " ;
+                // 设置Block的大小和位置
+                game.board->getBlock(i,j)->setGeometry(xPos, yPos, blockWidth, blockHeight);
+                // 连接信号与槽函数
+            }else
+                connect(game.board->getBlock(i,j), &QPushButton::clicked, [this, i, j]() {
+                    onBlockClicked(i, j);
+                });
         }
     }
+    qDebug() << "连接到槽啦";
 }
 
 void LevelGame::onAddButtonClicked()
@@ -212,8 +220,8 @@ void LevelGame::onChangeButtonClicked()
     animation->start();
 
     game.board->refreshGrid();
+
     generateBlocks();
-    game.board->repaint();
 
     // 创建动画：按钮的淡出效果
     QGraphicsOpacityEffect *effect = new QGraphicsOpacityEffect(changeButton);

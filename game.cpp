@@ -18,10 +18,15 @@ void Game::initializeBoard(){
         cols = 8;
         break;
     case 2:
+        rows = 9;
+        cols = 9;
+        break;
+    case 3:
         rows = 10;
         cols = 10;
         break;
     }
+
     board = new Board(this, rows, cols);
     qDebug() << "已创建棋盘";
 }

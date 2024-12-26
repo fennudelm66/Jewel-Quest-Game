@@ -129,7 +129,7 @@ void Board::generateBlock()
         for (int row = -1; row < rows; ) {
             if (emptyBlock != 0) {
                 grid[row + emptyBlock][col] = new Block(this, rand()
-                                                        % 4, row+emptyBlock, col);
+                                                        % 6, row+emptyBlock, col);
                 grid[row+emptyBlock][col]->move((emptyBlock+row)*40,col*40);
                 // 创建动画来让方块从上方滑下来
 

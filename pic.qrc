@@ -15,5 +15,7 @@
         <file>button.png</file>
         <file>change.png</file>
         <file>succeed.png</file>
+        <file>gem4.png</file>
+        <file>gem5.png</file>
     </qresource>
 </RCC>
