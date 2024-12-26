@@ -1,5 +1,6 @@
 #include "LevelGame.h"
 #include"mainwindow.h"
+#include"gameendwindow.h"
 #include <QDebug>
 #include <QPushButton>
 #include <QString>
@@ -9,6 +10,8 @@
 #include <QPropertyAnimation>
 #include <QSequentialAnimationGroup>
 #include <QEasingCurve>
+#include<QGraphicsOpacityEffect>
+#include <QTimer>
 
 LevelGame::LevelGame(int level, QWidget *parent)
     : QWidget(parent), level(level),game(this,level)
@@ -18,7 +21,8 @@ LevelGame::LevelGame(int level, QWidget *parent)
     // 设置窗口大小
     setFixedSize(500, 800);
 
-    game.board->setGeometry(0,0,800,800);
+    game.board->setGeometry(0,0,800,800); 
+    game.steps=1;
 
     // 设置背景图片并自适应
     QPixmap backgroundImage(":/LevelBackground.png");  // 你的背景图片路径
@@ -39,26 +43,26 @@ LevelGame::LevelGame(int level, QWidget *parent)
 
 
     // 创建设置按钮并设置图标
-    QPushButton *addButton = new QPushButton(this);
+    addButton = new QPushButton(this);
     QIcon addIcon(":/add.png");  // 设置按钮图标
     addButton->setIcon(addIcon);
     addButton->setIconSize(QSize(100, 100));  // 设置图标大小
     addButton->setFixedSize(100,100);
     addButton->setFlat(true);  // 去除按钮的边框和背景
-    addButton->move(150,600);
+    addButton->move(130,650);
     // 设置悬停时显示的提示文本
-    addButton->setToolTip("增加步数");
+    addButton->setToolTip("增加步数,需消耗100分数");
     connect(addButton,&QPushButton::clicked,this,&LevelGame::onAddButtonClicked);
 
     // 创建设置按钮并设置图标
-    QPushButton *changeButton = new QPushButton(this);
+    changeButton = new QPushButton(this);
     QIcon changeIcon(":/change.png");  // 设置按钮图标
     changeButton->setIcon(changeIcon);
     changeButton->setIconSize(QSize(100, 100));  // 设置图标大小
     changeButton->setFixedSize(100,100);
     changeButton->setFlat(true);  // 去除按钮的边框和背景
-    changeButton->move(250,600);
-    changeButton->setToolTip("打乱宝石");
+    changeButton->move(270,650);
+    changeButton->setToolTip("打乱宝石，需消耗200分数");
     connect(changeButton,&QPushButton::clicked,this,&LevelGame::onChangeButtonClicked);
 
 
@@ -80,12 +84,10 @@ LevelGame::LevelGame(int level, QWidget *parent)
     stepsLabel->setGeometry(250, 10, 200, 30);  // 设置 QLabel 的位置和大小
     // 更新 QLabel 显示的文本
     stepsLabel->setText("剩余步数：" + QString::number(game.steps));
-
     pointLabel=new QLabel(this);
     pointLabel->setStyleSheet("font-weight: bold; font-size: 40px; color: white;");
-    pointLabel->setGeometry(30,550,200,50);
+    pointLabel->setGeometry(30,550,300,50);
     pointLabel->setText("分数："+QString::number(game.points));
-
 
 
 }
@@ -134,14 +136,113 @@ void LevelGame::generateBlocks() {
 
 void LevelGame::onAddButtonClicked()
 {
+    game.steps++;
+    stepsLabel->setText("剩余步数：" + QString::number(game.steps));
+    game.points-=100;
+    pointLabel->setText("分数："+QString::number(game.points));
+    // 设置初始位置和大小
+    QRect startGeometry = pointLabel->geometry();
+    QRect endGeometry = QRect(pointLabel->x(), pointLabel->y(), pointLabel->width() * 1.2, pointLabel->height() * 1.2);
 
+    QPropertyAnimation* animation = new QPropertyAnimation(pointLabel, "geometry");
+    animation->setDuration(500);  // 动画时长
+    animation->setStartValue(startGeometry);
+    animation->setEndValue(endGeometry);
+    animation->setEasingCurve(QEasingCurve::OutBounce);
+
+    // 动画结束后恢复原位置
+    QObject::connect(animation, &QPropertyAnimation::finished, [=]() {
+        // 恢复到原始位置
+        pointLabel->setGeometry(startGeometry);
+    });
+
+    // 启动动画
+    animation->start();
+
+    // 创建动画：按钮的淡出效果
+    QGraphicsOpacityEffect *effect = new QGraphicsOpacityEffect(addButton);
+    addButton->setGraphicsEffect(effect);
+
+    // 设置按钮的透明度动画
+    QPropertyAnimation *animation1 = new QPropertyAnimation(effect, "opacity");
+    animation1->setDuration(500);  // 动画时长：1秒
+    animation1->setStartValue(1.0); // 开始透明度：完全不透明
+    animation1->setEndValue(0.0);   // 结束透明度：完全透明
+    animation1->setEasingCurve(QEasingCurve::Linear); // 线性渐变效果
+
+    // 在动画结束后，删除按钮并显示消息
+    connect(animation1, &QPropertyAnimation::finished, [this]() {
+        // 删除按钮
+        addButton->deleteLater();
+
+        // 创建并显示“道具使用成功”消息
+        QLabel *successLabel = new QLabel("道具使用成功", this);
+        successLabel->setStyleSheet("font-size: 20px; color: white;");
+        successLabel->move(addButton->pos());  // 设置文本显示位置为按钮位置
+        successLabel->show();
+
+        // 可以设置消息持续一段时间后消失
+        QTimer::singleShot(500, successLabel, &QLabel::deleteLater); // 2秒后删除标签
+    });
+
+    // 启动动画
+    animation1->start();
 }
 
 void LevelGame::onChangeButtonClicked()
 {
+    game.points-=200;
+    pointLabel->setText("分数："+QString::number(game.points));
+    // 设置初始位置和大小
+    QRect startGeometry = pointLabel->geometry();
+    QRect endGeometry = QRect(pointLabel->x(), pointLabel->y(), pointLabel->width() * 1.2, pointLabel->height() * 1.2);
+
+    QPropertyAnimation* animation = new QPropertyAnimation(pointLabel, "geometry");
+    animation->setDuration(500);  // 动画时长
+    animation->setStartValue(startGeometry);
+    animation->setEndValue(endGeometry);
+    animation->setEasingCurve(QEasingCurve::OutBounce);
+
+    // 动画结束后恢复原位置
+    QObject::connect(animation, &QPropertyAnimation::finished, [=]() {
+        // 恢复到原始位置
+        pointLabel->setGeometry(startGeometry);
+    });
+    // 启动动画
+    animation->start();
+
     game.board->refreshGrid();
     generateBlocks();
     game.board->repaint();
+
+    // 创建动画：按钮的淡出效果
+    QGraphicsOpacityEffect *effect = new QGraphicsOpacityEffect(changeButton);
+    changeButton->setGraphicsEffect(effect);
+
+    // 设置按钮的透明度动画
+    QPropertyAnimation *animation1 = new QPropertyAnimation(effect, "opacity");
+    animation1->setDuration(500);  // 动画时长：1秒
+    animation1->setStartValue(1.0); // 开始透明度：完全不透明
+    animation1->setEndValue(0.0);   // 结束透明度：完全透明
+    animation1->setEasingCurve(QEasingCurve::Linear); // 线性渐变效果
+
+    // 在动画结束后，删除按钮并显示消息
+    connect(animation1, &QPropertyAnimation::finished, [this]() {
+        // 删除按钮
+        changeButton->deleteLater();
+
+        // 创建并显示“道具使用成功”消息
+        QLabel *successLabel = new QLabel("道具使用成功", this);
+        successLabel->setStyleSheet("font-size: 20px; color: white;");
+        successLabel->move(changeButton->pos());  // 设置文本显示位置为按钮位置
+        successLabel->show();
+
+        // 可以设置消息持续一段时间后消失
+        QTimer::singleShot(500, successLabel, &QLabel::deleteLater); // 2秒后删除标签
+    });
+
+    // 启动动画
+    animation1->start();
 }
 
 
@@ -175,6 +276,7 @@ void LevelGame::onBlockClicked(int row, int col)
             game.findRemovableBlocks();
             game.steps--;
             stepsLabel->setText("剩余步数：" + QString::number(game.steps));
+            EndGame(game.steps);
             pointLabel->setText("分数："+QString::number(game.points));
 
             // 设置初始位置和大小
@@ -204,4 +306,26 @@ void LevelGame::onBlockClicked(int row, int col)
         }
 
 }
+}
+
+void LevelGame::EndGame(int steps)
+{
+    // 如果步数为 0，表示关卡结束
+    if (steps == 0) {
+        // 弹出无尽模式结束窗口
+        GameEndWindow *endWindow = new GameEndWindow(GameEndWindow::StepMode, game.points,game.goal, this);
+        // 连接信号到槽函数
+        connect(endWindow, &GameEndWindow::endWindowClosed, this, &LevelGame::closeLevelGameWindow);
+        endWindow->exec();
+    }
+
+}
+
+void LevelGame::closeLevelGameWindow(){
+    // 关闭无尽模式窗口
+    this->close();
+
+    // 显示 MainWindow 窗口
+    MainWindow *mainWindow = new MainWindow();
+    mainWindow->show();
 }

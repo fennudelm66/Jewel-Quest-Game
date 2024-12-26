@@ -251,10 +251,8 @@ void MainWindow::onRankingClicked()
     fadeAnimation->setDuration(500);  // 设置动画时长为 1 秒
     fadeAnimation->setStartValue(0.0); // 起始透明度为 0（完全透明）
     fadeAnimation->setEndValue(1.0);   // 结束透明度为 1（完全不透明）
-
     // 显示历史窗口
     historyWindow->show();
-
     // 启动动画
     fadeAnimation->start();
 }

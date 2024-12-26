@@ -28,15 +28,15 @@ private:
     QGraphicsOpacityEffect *opacityEffect;
     QPropertyAnimation *opacityAnimation;
     QPushButton *startButton;
+    QPushButton *changeButton;
+    QPushButton *addButton;
     QTimer *countdownTimer;
     int timeLeft;  // 剩余时间（秒）
-
     Game game;
-
-
 
 private slots:
     void onStartButtonClicked();
+    void onChangeButtonClicked();
 
 private:
     void updateCountdown();

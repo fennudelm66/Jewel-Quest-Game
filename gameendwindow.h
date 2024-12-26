@@ -19,8 +19,8 @@ public:
         StepMode
     };
 
-    explicit GameEndWindow(GameMode mode, int points, QWidget *parent = nullptr)
-        : QDialog(parent), m_points(points)
+    explicit GameEndWindow(GameMode mode, int points,int goal,QWidget *parent = nullptr)
+        : QDialog(parent), m_points(points),m_goal(goal)
     {
         // 设置窗口透明背景
         setAttribute(Qt::WA_TranslucentBackground);
@@ -58,7 +58,9 @@ public:
         closeButton->resize(80, 30);
         closeButton->move(160, 220);
         closeButton->setStyleSheet("background-color: yellow; color: brown; font: bold 16px;");
-        connect(closeButton, &QPushButton::clicked, this, &GameEndWindow::onCloseButtonClicked);
+        connect(closeButton, &QPushButton::clicked, this, [this, mode]() {
+            onCloseButtonClicked(mode);
+        });
 
         // 根据游戏模式设置界面
         setupWindow(mode);
@@ -84,6 +86,7 @@ protected:
 
 private:
     int m_points;  // 声明一个成员变量来存储 points
+    int m_goal;
     QLabel *messageLabel;
     QLabel *imageLabel;
     QLabel *point;  // 用来显示得分的标签
@@ -98,18 +101,32 @@ private:
             imageLabel->setPixmap(pixmap);
             imageLabel->setScaledContents(true); // 使图片自适应 QLabel 的大小
         } else if (mode == StepMode) {
-            messageLabel->setText("步数耗尽");
-            point->setText("得分：" + QString::number(m_points));
-            QPixmap pixmap(":/images/steps_exhausted.png");
-            imageLabel->setPixmap(pixmap);
-            imageLabel->setScaledContents(true); // 使图片自适应 QLabel 的大小
+            messageLabel->deleteLater();
+
+            if(m_points<m_goal){
+                point->deleteLater();
+                imageLabel->resize(200, 130);
+                imageLabel->move(100,85);
+                QPixmap pixmap(":/fail.png");
+                imageLabel->setPixmap(pixmap);
+                imageLabel->setScaledContents(true); // 使图片自适应 QLabel 的大小
+            }else{
+                imageLabel->resize(350, 130);
+                imageLabel->move(10,85);
+                point->setText("得分：" + QString::number(m_points));
+                point->move(100, 160);
+                QPixmap pixmap(":/succeed.png");
+                imageLabel->setPixmap(pixmap);
+                imageLabel->setScaledContents(true); // 使图片自适应 QLabel 的大小
+            }
         }
     }
 
-    void onCloseButtonClicked() {
+    void onCloseButtonClicked(GameMode mode) {
         // 获取当前的分数
-        int currentScore = m_points;
 
+        int currentScore = m_points;
+        if(mode==EndlessMode){
         // 打开文件读取当前最高分数
         QFile file("score.txt");
         int highScore = 0;  // 默认为 0 分
@@ -149,11 +166,12 @@ private:
                 return;
             }
         }
+    }
 
         // 发射信号，通知其他窗口
         emit endWindowClosed();
         // 关闭当前窗口
         this->close();
-    }
+}
 
 };

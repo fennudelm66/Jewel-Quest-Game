@@ -22,13 +22,18 @@ private:
     int generateNumber;
     Game game;
     QPushButton *backButton;
+    QPushButton *changeButton;
+    QPushButton *addButton;
     void generateBlocks();
     void onAddButtonClicked();
     void onChangeButtonClicked();
     void onBlockClicked(int row, int col);
+    void EndGame(int steps);
+    void closeLevelGameWindow();
     QLabel *stepsLabel;
     QLabel *pointLabel;
 
 };
+
 
 #endif // LEVELGAME_H
