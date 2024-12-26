@@ -11,5 +11,9 @@
         <file>gems.png</file>
         <file>default.png</file>
         <file>gem3.png</file>
+        <file>add.png</file>
+        <file>button.png</file>
+        <file>change.png</file>
+        <file>succeed.png</file>
     </qresource>
 </RCC>

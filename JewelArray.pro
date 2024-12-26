@@ -18,12 +18,15 @@ SOURCES += \
     audiomanager.cpp \
     block.cpp \
     board.cpp \
+    database.cpp \
     endlessmodewindow.cpp \
     game.cpp \
     gameendwindow.cpp \
     gamemodeWindow.cpp \
+    historywindow.cpp \
     levelgame.cpp \
     levelselectwindow.cpp \
+    logindialog.cpp \
     main.cpp \
     mainwindow.cpp
 
@@ -32,14 +35,18 @@ HEADERS += \
     audiomanager.h \
     block.h \
     board.h \
+    database.h \
     endlessmodewindow.h \
     game.h \
     gameendwindow.h \
     gamemodeWindow.h \
+    historywindow.h \
     inputmanager.h \
     levelgame.h \
     levelselectwindow.h \
-    mainwindow.h
+    logindialog.h \
+    mainwindow.h \
+    ui_mainwindow.h
 
 FORMS += \
     mainwindow.ui
@@ -50,4 +57,35 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 RESOURCES += \
+    pic.qrc \
     pic.qrc
+
+SUBDIRS += \
+    Renderer.pro
+
+DISTFILES += \
+    000调用方法教程.txt \
+    1.jpg \
+    JewelArray.pro.user \
+    LevelBackground.png \
+    PopupBackground.png \
+    README.md \
+    Renderer.pro.user \
+    Renderer.pro.user.1adb204 \
+    Renderer.pro_BACKUP_152.user \
+    Renderer.pro_BASE_152.user \
+    Renderer.pro_LOCAL_152.user \
+    Renderer.pro_REMOTE_152.user \
+    Settings.png \
+    add.png \
+    alarm.png \
+    button.png \
+    change.png \
+    default.png \
+    fail.png \
+    gem0.png \
+    gem1.png \
+    gem2.png \
+    gem3.png \
+    gems.png \
+    succeed.png
