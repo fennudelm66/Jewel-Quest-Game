@@ -27,6 +27,7 @@ private slots:
     void onStageModeSelected();
     void onEndlessModeSelected();
     void onRankingClicked();
+    void onSettingClicked();
     void onLevelSelected(int level);  // 处理选择关卡的信号
 
 private:

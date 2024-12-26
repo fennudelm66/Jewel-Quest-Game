@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
-<!-- Written by QtCreator 14.0.1, 2024-12-25T22:19:45. -->
+<!-- Written by QtCreator 14.0.1, 2024-12-26T22:10:10. -->
 <qtcreator>
  <data>
   <variable>EnvironmentId</variable>
@@ -243,13 +243,14 @@
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
     <value type="bool" key="PE.EnvironmentAspect.PrintOnRun">false</value>
     <value type="QString" key="PerfRecordArgsId">-e cpu-cycles --call-graph &quot;dwarf,4096&quot; -F 250</value>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName"></value>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">Qt4ProjectManager.Qt4RunConfiguration:E:/数据结构/专业课实训/作业/Jewelgame/git/Renderer.pro</value>
-    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">E:/数据结构/专业课实训/作业/Jewelgame/git/Renderer.pro</value>
-    <value type="bool" key="ProjectExplorer.RunConfiguration.Customized">false</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">Renderer2</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">Qt4ProjectManager.Qt4RunConfiguration:E:/数据结构/专业课实训/作业/Jewelgame/git2/Jewel-Quest-Game/Renderer.pro</value>
+    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">E:/数据结构/专业课实训/作业/Jewelgame/git2/Jewel-Quest-Game/Renderer.pro</value>
+    <value type="bool" key="ProjectExplorer.RunConfiguration.Customized">true</value>
     <value type="bool" key="RunConfiguration.UseCppDebuggerAuto">true</value>
     <value type="bool" key="RunConfiguration.UseLibrarySearchPath">true</value>
     <value type="bool" key="RunConfiguration.UseQmlDebuggerAuto">true</value>
+    <value type="QString" key="RunConfiguration.WorkingDirectory.default">E:/数据结构/专业课实训/作业/Jewelgame/git/build/Desktop_Qt_6_5_3_MinGW_64_bit-Debug</value>
    </valuemap>
    <value type="qlonglong" key="ProjectExplorer.Target.RunConfigurationCount">1</value>
   </valuemap>
