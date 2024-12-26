@@ -9,7 +9,7 @@ public:
     Game(QWidget *parent, int level);
     Board *board;
 //消除方块
-    void findRemovableBlocks();
+    bool findRemovableBlocks();
     void changePoints(int increment);
 
 //控制玩家是否可操作

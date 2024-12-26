@@ -79,41 +79,15 @@ LevelGame::~LevelGame()
 
 void LevelGame::generateBlocks() {
 
-    // 定义每个 Block 的大小和间距
-    int blockWidth = 40;
-    int blockHeight = 40;
-    int horizontalSpacing = 5;
-    int verticalSpacing = 5;
-
-    // 定义网格中心 Block 的位置（例如：我们希望中心位置为 centerX, centerY）
-    int centerX = 250; // 设置中心 X 坐标
-    int centerY = 330; // 设置中心 Y 坐标
-
-    // 计算网格的总宽度和总高度
-    int totalWidth = game.board->getRowCount() * (blockWidth + horizontalSpacing) - horizontalSpacing;  // 网格的总宽度
-    int totalHeight = game.board->getColCount() * (blockHeight + verticalSpacing) - verticalSpacing;   // 网格的总高度
-
-    // 计算起始位置，使得整个网格居中
-    int startX = centerX - totalWidth / 2;  // 左上角的 x 坐标
-    int startY = centerY - totalHeight / 2; // 左上角的 y 坐标
-
-    // 创建 n * n 的 Block 网格，并手动计算位置
     for (int i = 0; i < game.board->getRowCount(); ++i) {
         for (int j = 0; j < game.board->getColCount(); ++j) {
-            // 计算每个 Block 的坐标
-            int xPos = startX + j * (blockWidth + horizontalSpacing);
-            int yPos = startY + i * (blockHeight + verticalSpacing);
-            if(game.board->getBlock(i,j) == nullptr)
-                qDebug() << "Failed to load block: " ;
-            // 设置Block的大小和位置
-            game.board->getBlock(i,j)->setGeometry(xPos, yPos, blockWidth, blockHeight);
+
             // 连接信号与槽函数
             connect(game.board->getBlock(i,j), &QPushButton::clicked, [this, i, j]() {
                 onBlockClicked(i, j);
             });
         }
     }
-    // game.findRemovableBlocks();
 }
 
 void LevelGame::onAddButtonClicked()
@@ -144,26 +118,46 @@ void LevelGame::onBlockClicked(int row, int col)
     // 如果 block1 为空，则设置为点击的方块
     if (game.board->block1 == nullptr) {
         game.board->block1 = game.board->setChosenBlock(row, col);
+        // 设置按钮的背景透明度
+
+        // 设置按钮为可切换状态
+        game.board->block1->setCheckable(true);
+
+        game.board->block1->setStyleSheet(
+            "QPushButton {"
+            "   background-color: lightblue;" // 普通状态下的背景颜色
+            "   border: 2px solid #4CAF50;"
+            "   border-radius: 8px;"
+            "   padding: 10px;"
+            "   font-size: 16px;"
+            "}"
+            "QPushButton:checked {"
+            "   background-color: lightcoral;" // 被点击（选中）后的背景颜色
+            "}"
+            );
         qDebug()<<"选择1成功";
-    }
-    // 如果 block1 不为空，且 block2 为空，则设置为点击的方块
+    }  // 如果 block1 不为空，且 block2 为空，则设置为点击的方块
     else if (game.board->block2 == nullptr) {
         game.board->block2 = game.board->setChosenBlock(row, col);
         qDebug()<<"选择2成功";
+        printf("%d %d",game.board->block1->getX(),game.board->block2->getX());
     }
 
     // 如果 block2 已经选择，检查交换是否有效
-    if (game.board->block1 != nullptr && game.board->block2 != nullptr) {
+    else {
+        qDebug()<<"选择1和2成功";
         if (game.board->isActionValid()) {
+            qDebug()<<"交换合法";
             // 如果交换有效，查找可消除的方块
             game.board->moveBlock();
             game.findRemovableBlocks();
         }
         else {
+            qDebug()<<"交换不合法，重设block";
             // 如果交换无效，清空 block2 并重新选择新的 block2
             game.board->block2 = nullptr;
             game.board->block1 = game.board->setChosenBlock(row, col);
         }
     }
-    game.board->repaint();
+    generateBlocks();
 }

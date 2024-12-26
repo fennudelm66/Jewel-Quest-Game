@@ -15,6 +15,7 @@ CONFIG += c++17
 SOURCES += \
     GameSettingsWindow.cpp \
     InputManager.cpp \
+    audiomanager.cpp \
     block.cpp \
     board.cpp \
     endlessmodewindow.cpp \
@@ -28,6 +29,7 @@ SOURCES += \
 
 HEADERS += \
     GameSettingsWindow.h \
+    audiomanager.h \
     block.h \
     board.h \
     endlessmodewindow.h \
