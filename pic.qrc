@@ -10,5 +10,6 @@
         <file>gem2.png</file>
         <file>gems.png</file>
         <file>default.png</file>
+        <file>gem3.png</file>
     </qresource>
 </RCC>

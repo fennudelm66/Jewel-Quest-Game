@@ -112,7 +112,8 @@ void LevelGame::generateBlocks() {
                 onBlockClicked(i, j);
             });
         }
-}
+    }
+    // game.findRemovableBlocks();
 }
 
 void LevelGame::onAddButtonClicked()
@@ -155,14 +156,14 @@ void LevelGame::onBlockClicked(int row, int col)
     if (game.board->block1 != nullptr && game.board->block2 != nullptr) {
         if (game.board->isActionValid()) {
             // 如果交换有效，查找可消除的方块
+            game.board->moveBlock();
             game.findRemovableBlocks();
         }
         else {
             // 如果交换无效，清空 block2 并重新选择新的 block2
             game.board->block2 = nullptr;
             game.board->block1 = game.board->setChosenBlock(row, col);
-            game.board->generateBlock();  // 生成新的方块
         }
-
-}
+    }
+    game.board->repaint();
 }
