@@ -6,6 +6,9 @@
 #include <QPainter>
 #include <QPixmap>
 #include <QVBoxLayout>
+#include <QSoundEffect>
+#include "audiomanager.h"  // 引入音频管理类
+#include "GameSettingsWindow.h"
 
 class MainWindow : public QMainWindow
 {
@@ -28,6 +31,11 @@ private slots:
 
 private:
     void startGame(int level);  // 根据关卡开始游戏
+
+    AudioManager *audioManager ;
+    bool soundEnabled;                   // 是否启用声音
+    int currentVolume;                   // 当前音量
+
 
 };
 
