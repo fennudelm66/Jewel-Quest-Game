@@ -5,34 +5,33 @@
 #include <QPushButton>
 #include <QSlider>
 #include <QLabel>
+#include <QVBoxLayout>
+#include <QPainter>
+#include <QPixmap>
+#include <QIcon>
+#include "audiomanager.h"  // 引入 AudioManager
 
 class GameSettingsWindow : public QWidget
 {
     Q_OBJECT
 
 public:
-    explicit GameSettingsWindow(QWidget *parent = nullptr); // 构造函数
-
-protected:
-    void paintEvent(QPaintEvent *event) override; // 绘制背景事件
-
-signals:
-    void soundToggled(bool enabled);  // 信号：音效开关状态变化
-    void settingsReset();             // 信号：恢复默认设置
-    void volumeChanged(int level);    // 信号：音量改变
+    GameSettingsWindow(QWidget *parent = nullptr, AudioManager *audioMgr = nullptr);  // 构造函数
 
 private slots:
-    void onToggleSoundClicked();
-    void onResetSettingsClicked();
-    void onVolumeChanged(int level);
-    void onMuteClicked();
+    void toggleSound();    // 音效开关
+    void resetSettings();  // 恢复默认设置
+    void updateVolume(int volume);  // 更新音量
+    void closeWindow();  // 关闭窗口的槽
+
+protected:
+    void paintEvent(QPaintEvent *event) override;  // 绘制背景图片
 
 private:
-    QPushButton *toggleSoundButton;  // 音效开关按钮
-    QPushButton *resetSettingsButton; // 恢复默认按钮
-    QPushButton *closeButton;         // 关闭按钮
-    QSlider *volumeSlider;            // 音量滑块
-    QLabel *volumeLabel;              // 音量标签
+    AudioManager *audioManager;  // AudioManager 实例
+    QPushButton *closeButton;  // 关闭按钮
+    bool soundEnabled;           // 音效开关
+    int currentVolume;           // 当前音量
 };
 
 #endif // GAMESETTINGSWINDOW_H

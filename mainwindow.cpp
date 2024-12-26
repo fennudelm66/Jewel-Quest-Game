@@ -2,8 +2,10 @@
 #include "GameModeWindow.h"
 #include "LevelSelectWindow.h"
 #include "EndlessModeWindow.h"
-#include"levelgame.h"
-#include"historywindow.h"
+#include "GameSettingsWindow.h"
+#include "levelgame.h"
+#include "audiomanager.h"
+#include "historywindow.h"
 
 #include <QPushButton>
 #include <QVBoxLayout>
@@ -18,10 +20,21 @@
 #include <QFont>
 #include <QGraphicsOpacityEffect>
 #include <QPropertyAnimation>
+#include <QSoundEffect>
+#include <QDebug>
 
 MainWindow::MainWindow(QWidget *parent)
-    : QMainWindow(parent)
-{
+    : QMainWindow(parent),
+       audioManager(new AudioManager(this)),  // 创建 AudioManager 实例
+       soundEnabled(true),                   // 默认启用音效
+       currentVolume(50)                     // 默认音量 50%
+
+{   // 设置初始音量和播放背景音乐
+    audioManager->loadBackgroundMusic("gameMusic", "qrc:/n/music/music-2.wav");
+    audioManager->playBackgroundMusic("gameMusic");
+    audioManager->setGlobalVolume(currentVolume / 100.0f);
+    audioManager->setSoundEnabled(soundEnabled);
+
     // 设置窗口大小
     setFixedSize(500, 800);
 
@@ -99,9 +112,13 @@ MainWindow::MainWindow(QWidget *parent)
     connect(startButton,&QPushButton::clicked,this,&MainWindow::onStartClicked);
     connect(rankingButton,&QPushButton::clicked,this,&MainWindow::onRankingClicked);
 
+
 }
 
-MainWindow::~MainWindow() {}
+
+MainWindow::~MainWindow() {
+
+}
 
 void MainWindow::paintEvent(QPaintEvent *event)
 {
@@ -222,8 +239,14 @@ void MainWindow::onEndlessModeSelected()
 
 void MainWindow::onRankingClicked()
 {
+
+    // 创建并显示 SettingsWindow
+    GameSettingsWindow *settingsWindow = new GameSettingsWindow(this,audioManager);//传递audioManager实例
+
+
     // 创建历史记录窗口
     HistoryWindow *historyWindow = new HistoryWindow(this);
+
 
     // 获取主窗口的位置和大小
     QRect mainWindowGeometry = this->geometry();
