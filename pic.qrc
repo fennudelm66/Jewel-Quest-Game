@@ -17,5 +17,7 @@
         <file>succeed.png</file>
         <file>gem4.png</file>
         <file>gem5.png</file>
+        <file>rev.png</file>
+        <file>tip.png</file>
     </qresource>
 </RCC>

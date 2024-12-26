@@ -139,7 +139,59 @@ void MainWindow::paintEvent(QPaintEvent *event)
 
 void MainWindow::onExitClicked()
 {
-    QApplication::quit();  // 退出应用程序
+    // 创建确认退出的消息框
+    QMessageBox exitConfirmation;
+    exitConfirmation.setWindowTitle("确认退出");
+    exitConfirmation.setText("您确定要退出应用程序吗？");
+    exitConfirmation.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+
+    // 设置样式
+    exitConfirmation.setStyleSheet("QMessageBox {"
+                                   "background-color: yellow;"  // 设置背景色
+                                   "border: 2px solid brown;"   // 边框颜色
+                                   "border-radius: 10px;"       // 圆角
+                                   "}"
+                                   "QLabel {"
+                                   "color: brown;"              // 设置文本颜色
+                                   "font: bold 16px;"           // 设置字体样式
+                                   "}"
+                                   "QPushButton {"
+                                   "background-color: #4CAF50;"  // 按钮背景色
+                                   "color: white;"                // 按钮文本颜色
+                                   "font: bold 14px;"             // 按钮字体
+                                   "border-radius: 5px;"          // 按钮圆角
+                                   "padding: 10px 20px;"          // 按钮内边距
+                                   "}"
+                                   "QPushButton:hover {"
+                                   "background-color: #45a049;"   // 按钮悬停时的背景色
+                                   "}");
+
+
+    // 获取当前窗口的大小和位置
+    QRect windowRect = this->geometry(); // 当前窗口的几何信息
+    int centerX = windowRect.x() + windowRect.width() / 2;
+    int centerY = windowRect.y() + windowRect.height() / 2;
+
+    // 计算弹窗的位置，使其居中于当前窗口
+    int msgBoxWidth = 300; // 设定弹窗宽度
+    int msgBoxHeight = 100; // 设定弹窗高度
+    exitConfirmation.setFixedSize(msgBoxWidth, msgBoxHeight); // 固定消息框大小
+
+    // 计算弹窗的左上角坐标
+    int x = centerX - msgBoxWidth / 2;
+    int y = centerY - msgBoxHeight / 2;
+
+    // 设置弹窗的位置
+    exitConfirmation.move(x, y);
+
+    // 显示消息框并等待用户响应
+    int response = exitConfirmation.exec();
+
+    // 根据用户的选择退出或不退出
+    if (response == QMessageBox::Yes) {
+        QApplication::quit();  // 确认退出，退出应用程序
+    }
+    // 如果选择No，则什么都不做，用户将继续留在程序中
 }
 
 void MainWindow::onStartClicked()

@@ -16,6 +16,11 @@ public:
 
 private slots:
     void onBackButtonClicked();  // 返回按钮点击事件
+    void onAddButtonClicked();
+    void onChangeButtonClicked();
+    void onBlockClicked(int row, int col);
+    void onTipButtonClicked();
+    void onRevButtonClicked();
 
 private:
     int level;
@@ -24,10 +29,9 @@ private:
     QPushButton *backButton;
     QPushButton *changeButton;
     QPushButton *addButton;
+    QPushButton *tipButton;
+    QPushButton *revButton;
     void generateBlocks();
-    void onAddButtonClicked();
-    void onChangeButtonClicked();
-    void onBlockClicked(int row, int col);
     void EndGame(int steps);
     void closeLevelGameWindow();
     QLabel *stepsLabel;

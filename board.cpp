@@ -1,20 +1,21 @@
 #include "board.h"
 #include "qabstractanimation.h"
 #include "qpropertyanimation.h"
+#include <QParallelAnimationGroup>
+
 using namespace std;
 
 Board::Board(QWidget *parent, int rows, int cols) : QWidget(parent), rows(rows), cols(cols) {
 
     grid.resize(rows, std::vector<Block*>(cols, nullptr));
     qDebug() << "board初始化";
-    generateBlock();
+    initBoard();
 }
 
 Block* Board::setChosenBlock(int row, int col)
 {
     if(row>=0 && col>=0 && row < rows && col<cols){
         if(grid[row][col]!=nullptr){
-            qDebug() << "棋子非空";
             return grid[row][col];
         }
     }else{
@@ -22,6 +23,19 @@ Block* Board::setChosenBlock(int row, int col)
         return grid[0][0];
     }
 
+}
+
+void Board::initBoard(){
+    for (int i = 0; i < this->getRowCount(); ++i) {
+        for (int j = 0; j < this->getColCount(); ++j) {
+            // 计算每个 Block 的坐标
+            /*
+            int xPos = j * (blockHeight + verticalSpacing);
+            int yPos = i * (blockHeight + verticalSpacing);*/
+            grid[i][j] = new Block(this, rand()% 6, i, j);/*
+            grid[i][j]->setGeometry(xPos, yPos, blockWidth, blockHeight);*/
+        }
+    }
 }
 
 
@@ -83,7 +97,7 @@ void Board::findRemovableBlocks(std::vector<std::pair<int, int>>& removableBlock
         }
     }
 }
-void Board::setAnimation(Block* block, int sx, int sy, int ex, int ey)
+QPropertyAnimation *Board::setAnimation(Block* block, int sx, int sy, int ex, int ey)
 {
     // 创建动画来让方块从上方滑下来
     QPropertyAnimation* animation = new QPropertyAnimation(block, "pos");
@@ -93,34 +107,31 @@ void Board::setAnimation(Block* block, int sx, int sy, int ex, int ey)
 
     // 启动动画
     animation->start(QAbstractAnimation::DeleteWhenStopped);
+    return animation;
 }
 
 void Board::generateBlock()
 {
-
-    // 创建 n * n 的 Block 网格，并手动计算位置
-    for (int i = 0; i < this->getRowCount(); ++i) {
-        for (int j = 0; j < this->getColCount(); ++j) {
-            // 计算每个 Block 的坐标
-            int xPos = startX + j * (blockWidth + horizontalSpacing);
-            int yPos = startY + i * (blockHeight + verticalSpacing);
-
-        }
-    }
     // game.findRemovableBlocks();
     int emptyBlock = 0;
     for (int col = 0; col < cols; ++col) {  // 遍历每列
         // 从下到上遍历该列的所有行，寻找空位
         emptyBlock = 0;
         for (int row = rows - 1; row >= 0; row--) {
+            // 计算每个 Block 的坐标
+            int xPos = col * (blockWidth + horizontalSpacing);
+            int yPos = row * (blockHeight + verticalSpacing);
             if (grid[row][col] == nullptr) {  // 找到空位
                 emptyBlock++;
             }
             else if(emptyBlock!=0&&grid[row][col]!=nullptr){
                 grid[row + emptyBlock][col] = grid[row][col];
+                grid[row + emptyBlock][col]->setPosition(row, col);
                 grid[row][col] = nullptr; // 初始位置稍微偏上
-                setAnimation(grid[row+emptyBlock][col],col * 40 + startX, row * 40 + startY,  col * 40 + startX, (row + emptyBlock) * 40 + startY);
+                QPropertyAnimation* animation = setAnimation(grid[row+emptyBlock][col],xPos, yPos,  xPos, (row + emptyBlock) * (blockHeight + verticalSpacing));
                 //grid[row+emptyBlock][col]->move((emptyBlock+row)40,col40);
+
+                animation->start();
             }
         }
         qDebug() << emptyBlock;
@@ -130,11 +141,12 @@ void Board::generateBlock()
             if (emptyBlock != 0) {
                 grid[row + emptyBlock][col] = new Block(this, rand()
                                                         % 6, row+emptyBlock, col);
-                grid[row+emptyBlock][col]->move((emptyBlock+row)*40,col*40);
+                grid[row + emptyBlock][col]->show();
+                // grid[row+emptyBlock][col]->move((emptyBlock+row)*40,col*40);
                 // 创建动画来让方块从上方滑下来
 
-                setAnimation(grid[row+emptyBlock][col],col * 40 + startX, row * 40 + startY,  col * 40 + startX, (row + emptyBlock) * 40 + startY);
-
+                QPropertyAnimation* animation1 = setAnimation(grid[row+emptyBlock][col],col * (blockHeight + verticalSpacing), row * (blockHeight + verticalSpacing),  col * (blockHeight + verticalSpacing), (row + emptyBlock) *  (blockHeight + verticalSpacing));
+                animation1->start();
                 emptyBlock--;
             }else
                 break;    //若没有空位，跳出循环
@@ -161,7 +173,7 @@ void Board::refreshGrid() {
         }
     }
     qDebug() << "刷新棋盘";
-    generateBlock();
+    initBoard();
 }
 
 
@@ -175,25 +187,40 @@ void Board::eliminateBlock(int row, int col) {
     /*for (int r = row - 1; r >= 0; --r) {
         grid[r + 1][col] = grid[r][col];
     }*/
-    qDebug() << "消除方块" << row << " " << col;
+    qDebug() << "消除方块" << row << "," << col;
 
 }
 
 void Board::moveBlock() {
-    int row1 = block1->getY();
-    int col1 = block1->getX();
-    int row2 = block2->getY();
-    int col2 = block2->getX();
+    int row1 = block1->getX();
+    int col1 = block1->getY();
+    int row2 = block2->getX();
+    int col2 = block2->getY();
 
+    qDebug() << "交换方块" << row1  << ","<< col1  << " "<< row2  << ","<< col2;
     // 交换 grid 中这两个位置的方块
     Block* temp = grid[row1][col1];
     grid[row1][col1] = grid[row2][col2];
-    grid[row2][col2] = temp;
+    grid[row1][col1]->setPosition(row2,col2);
 
-    setAnimation(grid[row1][col1],col1 * 40 + startX, row1 * 40 + startY,  col2 * 40 + startX, row2 * 40 + startY);
-    setAnimation(grid[row2][col2],col2 * 40 + startX, row2 * 40 + startY,  col1 * 40 + startX, row1 * 40 + startY);
+    grid[row2][col2] = temp;
+    grid[row2][col2]->setPosition(temp->getX(),temp->getY());
+
+    grid[row1][col1]->show();
+    grid[row2][col2]->show();
+
+    QPropertyAnimation *anim1 = setAnimation(grid[row1][col1],col1 * (blockHeight + verticalSpacing), row1 * (blockHeight + verticalSpacing),  col2 * (blockHeight + verticalSpacing), row2 * (blockHeight + verticalSpacing));
+    QPropertyAnimation *anim2 = setAnimation(grid[row2][col2],col2 * (blockHeight + verticalSpacing), row2 * (blockHeight + verticalSpacing),  col1 * (blockHeight + verticalSpacing), row1 * (blockHeight + verticalSpacing));
+    // QParallelAnimationGroup *group = new QParallelAnimationGroup;
+    // group->addAnimation(anim1);
+    // group->addAnimation(anim2);
+
+    // group->start();
+    anim1->start();
+    anim2->start();
+
     // 更新 block1 和 block2 的位置
-    block1 = nullptr;
+    /*
     block1->setStyleSheet(
         "QPushButton {"
         "   background-color: lightblue;"
@@ -202,15 +229,16 @@ void Board::moveBlock() {
         "   padding: 10px;"
         "   font-size: 16px;"
         "}"
-        );
+        );*/
+    block1 = nullptr;
     block2 = nullptr;
 }
 
 bool Board::isActionValid() {
-    int row1 = block1->getY();
-    int col1 = block1->getX();
-    int row2 = block2->getY();
-    int col2 = block2->getX();
+    int row1 = block1->getX();
+    int col1 = block1->getY();
+    int row2 = block2->getX();
+    int col2 = block2->getY();
 
     if (row1 < 0 || row1 >= rows || col1 < 0 || col1 >= cols ||
         row2 < 0 || row2 >= rows || col2 < 0 || col2 >= cols) {

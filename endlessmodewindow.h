@@ -31,12 +31,16 @@ private:
     QPushButton *changeButton;
     QPushButton *addButton;
     QTimer *countdownTimer;
+    QPushButton *tipButton;
+    QPushButton *revButton;
     int timeLeft;  // 剩余时间（秒）
     Game game;
 
 private slots:
     void onStartButtonClicked();
     void onChangeButtonClicked();
+    void onTipButtonClicked();
+    void onRevButtonClicked();
 
 private:
     void updateCountdown();

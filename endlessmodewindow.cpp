@@ -100,6 +100,26 @@ EndlessModeWindow::EndlessModeWindow(QWidget *parent)
     changeButton->setToolTip("打乱宝石");
     connect(changeButton,&QPushButton::clicked,this,&EndlessModeWindow::onChangeButtonClicked);
 
+    tipButton=new QPushButton(this);
+    QIcon tipIcon(":/tip.bng");
+    addButton->setIcon(tipIcon);
+    tipButton->setIconSize(QSize(100, 100));  // 设置图标大小
+    tipButton->setFixedSize(100,100);
+    tipButton->setFlat(true);
+    tipButton->move(30,650);
+    tipButton->setToolTip("提示");
+    connect(tipButton,&QPushButton::clicked,this,&EndlessModeWindow::onTipButtonClicked);
+
+    revButton=new QPushButton(this);
+    QIcon revIcon(":/rev.bng");
+    addButton->setIcon(revIcon);
+    revButton->setIconSize(QSize(100, 100));  // 设置图标大小
+    revButton->setFixedSize(100,100);
+    revButton->setFlat(true);
+    revButton->move(360,650);
+    revButton->setToolTip("撤回");
+    connect(revButton,&QPushButton::clicked,this,&EndlessModeWindow::onRevButtonClicked);
+
 
     // 创建一个背景框 (QFrame)
     QFrame *backgroundFrame = new QFrame(this);
@@ -243,7 +263,7 @@ void EndlessModeWindow::showStartDialog()
     connect(messageBox, &QMessageBox::accepted, this, &EndlessModeWindow::onStartButtonClicked);
 
     // 设置为非模态的弹窗（允许与主窗口交互）
-    messageBox->setModal(false);  // 使弹窗为非模态
+    messageBox->setModal(true);  // 使弹窗为非模态
     messageBox->show();
 
 }
@@ -375,6 +395,16 @@ void EndlessModeWindow::onChangeButtonClicked()
     animation1->start();
 }
 
+void EndlessModeWindow::onTipButtonClicked()
+{
+
+}
+
+void EndlessModeWindow::onRevButtonClicked()
+{
+
+}
+
 void EndlessModeWindow::updateCountdown()
 {
     if (timeLeft > 0) {
@@ -406,6 +436,7 @@ void EndlessModeWindow::closeEndlessModeWindow()
 
     // 显示 MainWindow 窗口
     MainWindow *mainWindow = new MainWindow();
+    mainWindow->audioManager->stopBackgroundMusic();
     mainWindow->show();
 
 }

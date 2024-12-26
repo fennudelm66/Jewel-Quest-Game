@@ -28,6 +28,15 @@ void Game::initializeBoard(){
     }
 
     board = new Board(this, rows, cols);
+
+    for (int i = 0; i < board->getRowCount(); ++i) {
+        for (int j = 0; j < board->getColCount(); ++j) {
+            board->getBlock(i,j)->hide();
+        }
+    }
+
+    findRemovableBlocks();
+    points = 0;
     qDebug() << "已创建棋盘";
 }
 
@@ -35,15 +44,19 @@ void Game::initializeBoard(){
 void Game::initializeGoalSteps(){
     switch(level){
     case 1:
-        goal = 100;
-        steps = 20;
+        goal = 200;
+        steps = 5;
         break;
     case 2:
-        goal = 500;
-        steps = 20;
+        goal = 2000;
+        steps = 10;
+        break;
+    case 3:
+        goal = 5000;
+        steps = 15;
         break;
     defalt:
-        goal = 1000;
+        goal = 10000;
         steps = 15;
         break;
     }

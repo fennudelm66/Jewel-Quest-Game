@@ -2,6 +2,8 @@
 #define BOARD_H
 
 #include "block.h"
+#include "qabstractanimation.h"
+#include "qpropertyanimation.h"
 #include <cstdlib>
 #include <vector>
 
@@ -10,7 +12,7 @@ public:
     QWidget *parent;
 
     Board(QWidget *parent, int rows, int cols);
-
+    void initBoard();
     // 设置棋盘上的方块
     void setBlock(int row, int col, Block* block);
 
@@ -28,7 +30,7 @@ public:
     void findRemovableBlocks(std::vector<std::pair<int, int>>& removableBlocks);
 
     //动画
-    void setAnimation(Block*, int sx, int sy, int ex, int ey);
+    QPropertyAnimation *setAnimation(Block*, int sx, int sy, int ex, int ey);
 
     // 从上方生成新方块
     void generateBlock();

@@ -12,7 +12,7 @@ class Block : public QPushButton
 public:
 
     // 默认构造函数
-    Block(QWidget *parent = nullptr, int type = 0, int x = 0, int y = 0);
+    Block(QWidget *parent = nullptr, int type = 0, int x =-1, int y = -1);
 
     // 获取棋子坐标
     int getX() const;
