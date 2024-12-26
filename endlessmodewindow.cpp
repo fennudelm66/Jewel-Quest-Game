@@ -111,6 +111,26 @@ EndlessModeWindow::EndlessModeWindow(QWidget *parent)
     backgroundFrame->setAttribute(Qt::WA_TransparentForMouseEvents);
     backgroundFrame->lower();
 
+    pointLabel=new QLabel(this);
+    pointLabel->setStyleSheet("font-weight: bold; font-size: 40px; color: white;");
+    pointLabel->setGeometry(30,550,200,50);
+    pointLabel->setText("分数："+QString::number(game.points));
+
+    generateBlocks();
+}
+
+
+EndlessModeWindow::~EndlessModeWindow()
+{
+    delete countdownTimer;
+    delete opacityAnimation;
+    delete opacityEffect;
+    delete countdownLabel;
+    delete imageLabel;
+
+}
+
+void EndlessModeWindow::generateBlocks(){
     // 定义每个Block的大小和间距
     int blockWidth = 40;
     int blockHeight = 40;
@@ -131,19 +151,61 @@ EndlessModeWindow::EndlessModeWindow(QWidget *parent)
                 qDebug() << "Failed to load block: " ;
             // 设置Block的大小和位置
             game.board->getBlock(i,j)->setGeometry(xPos, yPos, blockWidth, blockHeight);
+            connect(game.board->getBlock(i,j), &QPushButton::clicked, [this, i, j]() {
+                onBlockClicked(i, j);
+            });
         }
     }
 }
 
-
-EndlessModeWindow::~EndlessModeWindow()
+void EndlessModeWindow::onBlockClicked(int row,int col)
 {
-    delete countdownTimer;
-    delete opacityAnimation;
-    delete opacityEffect;
-    delete countdownLabel;
-    delete imageLabel;
+    // 如果 block1 为空，则设置为点击的方块
+    if (game.board->block1 == nullptr) {
+        game.board->block1 = game.board->setChosenBlock(row, col);
+        qDebug()<<"选择1成功";
+    }
+    // 如果 block1 不为空，且 block2 为空，则设置为点击的方块
+    else if (game.board->block2 == nullptr) {
+        game.board->block2 = game.board->setChosenBlock(row, col);
+        qDebug()<<"选择2成功";
+    }
 
+    // 如果 block2 已经选择，检查交换是否有效
+    if (game.board->block1 != nullptr && game.board->block2 != nullptr) {
+        if (game.board->isActionValid()) {
+            // 如果交换有效，查找可消除的方块
+            game.findRemovableBlocks();
+            pointLabel->setText("分数："+QString::number(game.points));
+
+            // 设置初始位置和大小
+            QRect startGeometry = pointLabel->geometry();
+            QRect endGeometry = QRect(pointLabel->x(), pointLabel->y(), pointLabel->width() * 1.2, pointLabel->height() * 1.2);
+
+            QPropertyAnimation* animation = new QPropertyAnimation(pointLabel, "geometry");
+            animation->setDuration(500);  // 动画时长
+            animation->setStartValue(startGeometry);
+            animation->setEndValue(endGeometry);
+            animation->setEasingCurve(QEasingCurve::OutBounce);
+
+            // 动画结束后恢复原位置
+            QObject::connect(animation, &QPropertyAnimation::finished, [=]() {
+                // 恢复到原始位置
+                pointLabel->setGeometry(startGeometry);
+            });
+
+            // 启动动画
+            animation->start();
+
+        }
+        else {
+            // 如果交换无效，清空 block2 并重新选择新的 block2
+            game.board->block2 = nullptr;
+            game.board->block1 = game.board->setChosenBlock(row, col);
+            game.board->generateBlock();  // 生成新的方块
+        }
+
+    }
 }
 
 void EndlessModeWindow::showStartDialog()
@@ -201,7 +263,6 @@ void EndlessModeWindow::onBackButtonClicked()
 void EndlessModeWindow::onAddButtonClicked()
 {
     timeLeft+=10;
-
 }
 
 void EndlessModeWindow::onStartButtonClicked()
@@ -227,8 +288,22 @@ void EndlessModeWindow::updateCountdown()
         // 显示“时间到！”的图片和文字动画
 
         // 弹出无尽模式结束窗口
-        GameEndWindow *endWindow = new GameEndWindow(GameEndWindow::EndlessMode, this);
+        GameEndWindow *endWindow = new GameEndWindow(GameEndWindow::EndlessMode, game.points, this);
+        // 连接信号到槽函数
+        connect(endWindow, &GameEndWindow::endWindowClosed, this, &EndlessModeWindow::closeEndlessModeWindow);
         endWindow->exec();
     }
 }
+
+void EndlessModeWindow::closeEndlessModeWindow()
+{
+    // 关闭无尽模式窗口
+    this->close();
+
+    // 显示 MainWindow 窗口
+    MainWindow *mainWindow = new MainWindow();
+    mainWindow->show();
+
+}
+
 

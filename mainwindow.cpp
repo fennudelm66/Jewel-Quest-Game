@@ -2,9 +2,8 @@
 #include "GameModeWindow.h"
 #include "LevelSelectWindow.h"
 #include "EndlessModeWindow.h"
-#include "GameSettingsWindow.h"
 #include"levelgame.h"
-
+#include"historywindow.h"
 
 #include <QPushButton>
 #include <QVBoxLayout>
@@ -28,7 +27,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     // 创建按钮
     QPushButton *startButton = new QPushButton("开始游戏", this);
-    QPushButton *rankingButton = new QPushButton("排行榜", this);
+    QPushButton *rankingButton = new QPushButton("历史记录", this);
     QPushButton *exitButton = new QPushButton("退出游戏", this);
 
     // 设置按钮样式
@@ -96,9 +95,9 @@ MainWindow::MainWindow(QWidget *parent)
     // 将按钮放置在右上角
     settingsButton->move(width() - settingsButton->width() - 10, 10);
 
-    connect(settingsButton,&QPushButton::clicked,this,&MainWindow::onSettingsClicked);
     connect(exitButton, &QPushButton::clicked, this, &MainWindow::onExitClicked);
     connect(startButton,&QPushButton::clicked,this,&MainWindow::onStartClicked);
+    connect(rankingButton,&QPushButton::clicked,this,&MainWindow::onRankingClicked);
 
 }
 
@@ -221,40 +220,42 @@ void MainWindow::onEndlessModeSelected()
     endlessWindow->show();
 }
 
-void MainWindow::onSettingsClicked()
+void MainWindow::onRankingClicked()
 {
-    // 创建并显示 SettingsWindow
-    GameSettingsWindow *settingsWindow = new GameSettingsWindow(this);
+    // 创建历史记录窗口
+    HistoryWindow *historyWindow = new HistoryWindow(this);
 
-    // 获取目标位置
-    int targetX = (this->width() - settingsWindow->width()) / 2;
-    int targetY = (this->height() - settingsWindow->height()) / 2;
+    // 获取主窗口的位置和大小
+    QRect mainWindowGeometry = this->geometry();
+    int mainWindowCenterX = mainWindowGeometry.center().x();
+    int mainWindowCenterY = mainWindowGeometry.center().y();
 
-    // 设置初始位置为屏幕上方
-    settingsWindow->move(targetX, -settingsWindow->height());
+    // 获取历史窗口的大小
+    QRect historyWindowGeometry = historyWindow->geometry();
+    int historyWindowWidth = historyWindowGeometry.width();
+    int historyWindowHeight = historyWindowGeometry.height();
 
-    // 创建透明度效果并应用到窗口
-    QGraphicsOpacityEffect *opacityEffect = new QGraphicsOpacityEffect(settingsWindow);
-    settingsWindow->setGraphicsEffect(opacityEffect);
+    // 计算历史窗口的左上角位置，使其居中
+    int x = mainWindowCenterX - historyWindowWidth / 2;
+    int y = mainWindowCenterY - historyWindowHeight / 2;
 
-    // 创建并配置透明度动画
-    QPropertyAnimation *opacityAnimation = new QPropertyAnimation(opacityEffect, "opacity");
-    opacityAnimation->setDuration(500);  // 动画持续时间
-    opacityAnimation->setStartValue(0.0);  // 初始透明度为 0（完全透明）
-    opacityAnimation->setEndValue(1.0);    // 最终透明度为 1（完全不透明）
+    // 设置历史窗口的位置
+    historyWindow->move(x, y);
 
-    // 创建位置动画，使窗口下落
-    QPropertyAnimation *positionAnimation = new QPropertyAnimation(settingsWindow, "pos");
-    positionAnimation->setDuration(500);
-    positionAnimation->setStartValue(QPoint(targetX, -settingsWindow->height()));
-    positionAnimation->setEndValue(QPoint(targetX, targetY));
+    // 创建透明度效果对象
+    QGraphicsOpacityEffect *opacityEffect = new QGraphicsOpacityEffect(historyWindow);
+    historyWindow->setGraphicsEffect(opacityEffect);
 
-    // 并行启动两个动画
-    opacityAnimation->start();
-    positionAnimation->start();
+    // 创建动画对象，控制透明度
+    QPropertyAnimation *fadeAnimation = new QPropertyAnimation(opacityEffect, "opacity");
+    fadeAnimation->setDuration(500);  // 设置动画时长为 1 秒
+    fadeAnimation->setStartValue(0.0); // 起始透明度为 0（完全透明）
+    fadeAnimation->setEndValue(1.0);   // 结束透明度为 1（完全不透明）
 
-    // 显示窗口
-    settingsWindow->show();
+    // 显示历史窗口
+    historyWindow->show();
 
-
+    // 启动动画
+    fadeAnimation->start();
 }
+

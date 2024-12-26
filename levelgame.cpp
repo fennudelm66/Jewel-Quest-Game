@@ -6,6 +6,9 @@
 #include <QPixmap>
 #include <QPalette>
 #include <QRandomGenerator>
+#include <QPropertyAnimation>
+#include <QSequentialAnimationGroup>
+#include <QEasingCurve>
 
 LevelGame::LevelGame(int level, QWidget *parent)
     : QWidget(parent), level(level),game(this,level)
@@ -69,6 +72,20 @@ LevelGame::LevelGame(int level, QWidget *parent)
     backgroundFrame->setAttribute(Qt::WA_TransparentForMouseEvents);
 
     backgroundFrame->lower();
+
+    // 创建 QLabel 控件来显示剩余步数
+    stepsLabel = new QLabel(this);
+    stepsLabel->setAlignment(Qt::AlignRight | Qt::AlignTop);  // 设置文本右对齐，顶端对齐
+    stepsLabel->setStyleSheet("font-weight: bold; font-size: 20px; color: white;");
+    stepsLabel->setGeometry(250, 10, 200, 30);  // 设置 QLabel 的位置和大小
+    // 更新 QLabel 显示的文本
+    stepsLabel->setText("剩余步数：" + QString::number(game.steps));
+
+    pointLabel=new QLabel(this);
+    pointLabel->setStyleSheet("font-weight: bold; font-size: 40px; color: white;");
+    pointLabel->setGeometry(30,550,200,50);
+    pointLabel->setText("分数："+QString::number(game.points));
+
 
 
 }
@@ -156,6 +173,28 @@ void LevelGame::onBlockClicked(int row, int col)
         if (game.board->isActionValid()) {
             // 如果交换有效，查找可消除的方块
             game.findRemovableBlocks();
+            game.steps--;
+            stepsLabel->setText("剩余步数：" + QString::number(game.steps));
+            pointLabel->setText("分数："+QString::number(game.points));
+
+            // 设置初始位置和大小
+            QRect startGeometry = pointLabel->geometry();
+            QRect endGeometry = QRect(pointLabel->x(), pointLabel->y(), pointLabel->width() * 1.2, pointLabel->height() * 1.2);
+
+            QPropertyAnimation* animation = new QPropertyAnimation(pointLabel, "geometry");
+            animation->setDuration(500);  // 动画时长
+            animation->setStartValue(startGeometry);
+            animation->setEndValue(endGeometry);
+            animation->setEasingCurve(QEasingCurve::OutBounce);
+
+            // 动画结束后恢复原位置
+            QObject::connect(animation, &QPropertyAnimation::finished, [=]() {
+                // 恢复到原始位置
+                pointLabel->setGeometry(startGeometry);
+            });
+
+            // 启动动画
+            animation->start();
         }
         else {
             // 如果交换无效，清空 block2 并重新选择新的 block2

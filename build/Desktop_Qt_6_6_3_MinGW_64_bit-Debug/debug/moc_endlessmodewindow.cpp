@@ -41,18 +41,14 @@ struct qt_meta_stringdata_CLASSEndlessModeWindowENDCLASS_t {};
 constexpr auto qt_meta_stringdata_CLASSEndlessModeWindowENDCLASS = QtMocHelpers::stringData(
     "EndlessModeWindow",
     "onStartButtonClicked",
-    "",
-    "updateCountdown",
-    "showStartDialog"
+    ""
 );
 #else  // !QT_MOC_HAS_STRING_DATA
 struct qt_meta_stringdata_CLASSEndlessModeWindowENDCLASS_t {
-    uint offsetsAndSizes[10];
+    uint offsetsAndSizes[6];
     char stringdata0[18];
     char stringdata1[21];
     char stringdata2[1];
-    char stringdata3[16];
-    char stringdata4[16];
 };
 #define QT_MOC_LITERAL(ofs, len) \
     uint(sizeof(qt_meta_stringdata_CLASSEndlessModeWindowENDCLASS_t::offsetsAndSizes) + ofs), len 
@@ -60,15 +56,11 @@ Q_CONSTINIT static const qt_meta_stringdata_CLASSEndlessModeWindowENDCLASS_t qt_
     {
         QT_MOC_LITERAL(0, 17),  // "EndlessModeWindow"
         QT_MOC_LITERAL(18, 20),  // "onStartButtonClicked"
-        QT_MOC_LITERAL(39, 0),  // ""
-        QT_MOC_LITERAL(40, 15),  // "updateCountdown"
-        QT_MOC_LITERAL(56, 15)   // "showStartDialog"
+        QT_MOC_LITERAL(39, 0)   // ""
     },
     "EndlessModeWindow",
     "onStartButtonClicked",
-    "",
-    "updateCountdown",
-    "showStartDialog"
+    ""
 };
 #undef QT_MOC_LITERAL
 #endif // !QT_MOC_HAS_STRING_DATA
@@ -80,7 +72,7 @@ Q_CONSTINIT static const uint qt_meta_data_CLASSEndlessModeWindowENDCLASS[] = {
       12,       // revision
        0,       // classname
        0,    0, // classinfo
-       3,   14, // methods
+       1,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -88,13 +80,9 @@ Q_CONSTINIT static const uint qt_meta_data_CLASSEndlessModeWindowENDCLASS[] = {
        0,       // signalCount
 
  // slots: name, argc, parameters, tag, flags, initial metatype offsets
-       1,    0,   32,    2, 0x08,    1 /* Private */,
-       3,    0,   33,    2, 0x08,    2 /* Private */,
-       4,    0,   34,    2, 0x08,    3 /* Private */,
+       1,    0,   20,    2, 0x08,    1 /* Private */,
 
  // slots: parameters
-    QMetaType::Void,
-    QMetaType::Void,
     QMetaType::Void,
 
        0        // eod
@@ -110,10 +98,6 @@ Q_CONSTINIT const QMetaObject EndlessModeWindow::staticMetaObject = { {
         // Q_OBJECT / Q_GADGET
         QtPrivate::TypeAndForceComplete<EndlessModeWindow, std::true_type>,
         // method 'onStartButtonClicked'
-        QtPrivate::TypeAndForceComplete<void, std::false_type>,
-        // method 'updateCountdown'
-        QtPrivate::TypeAndForceComplete<void, std::false_type>,
-        // method 'showStartDialog'
         QtPrivate::TypeAndForceComplete<void, std::false_type>
     >,
     nullptr
@@ -126,8 +110,6 @@ void EndlessModeWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, in
         (void)_t;
         switch (_id) {
         case 0: _t->onStartButtonClicked(); break;
-        case 1: _t->updateCountdown(); break;
-        case 2: _t->showStartDialog(); break;
         default: ;
         }
     }
@@ -153,13 +135,13 @@ int EndlessModeWindow::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 3)
+        if (_id < 1)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 3;
+        _id -= 1;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 3)
+        if (_id < 1)
             *reinterpret_cast<QMetaType *>(_a[0]) = QMetaType();
-        _id -= 3;
+        _id -= 1;
     }
     return _id;
 }

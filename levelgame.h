@@ -26,6 +26,8 @@ private:
     void onAddButtonClicked();
     void onChangeButtonClicked();
     void onBlockClicked(int row, int col);
+    QLabel *stepsLabel;
+    QLabel *pointLabel;
 
 };
 

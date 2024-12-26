@@ -24,6 +24,7 @@ private:
     QLabel *imageLabel;
     QLabel *textLabel;
     QLabel *countdownLabel;
+    QLabel *pointLabel;
     QGraphicsOpacityEffect *opacityEffect;
     QPropertyAnimation *opacityAnimation;
     QPushButton *startButton;
@@ -42,6 +43,9 @@ private:
     void showStartDialog();
     void onBackButtonClicked();
     void onAddButtonClicked();
+    void generateBlocks();
+    void onBlockClicked(int row,int col);
+    void closeEndlessModeWindow();
 };
 
 #endif // ENDLESSMODEWINDOW_H

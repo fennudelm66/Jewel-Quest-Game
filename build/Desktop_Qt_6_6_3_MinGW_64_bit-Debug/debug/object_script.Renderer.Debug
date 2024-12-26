@@ -1,6 +1,10 @@
 debug/GameModeWindow.o
 debug/block.o
+debug/board.o
 debug/endlessmodewindow.o
+debug/game.o
+debug/gameendwindow.o
+debug/historywindow.o
 debug/levelgame.o
 debug/levelselectwindow.o
 debug/main.o
@@ -9,6 +13,9 @@ debug/qrc_pic.o
 debug/moc_GameModeWindow.o
 debug/moc_block.o
 debug/moc_endlessmodewindow.o
+debug/moc_game.o
+debug/moc_gameendwindow.o
+debug/moc_historywindow.o
 debug/moc_levelgame.o
 debug/moc_levelselectwindow.o
 debug/moc_mainwindow.o
