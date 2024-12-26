@@ -24,24 +24,28 @@ private:
     QLabel *imageLabel;
     QLabel *textLabel;
     QLabel *countdownLabel;
+    QLabel *pointLabel;
     QGraphicsOpacityEffect *opacityEffect;
     QPropertyAnimation *opacityAnimation;
     QPushButton *startButton;
+    QPushButton *changeButton;
+    QPushButton *addButton;
     QTimer *countdownTimer;
     int timeLeft;  // 剩余时间（秒）
-
     Game game;
-
-
 
 private slots:
     void onStartButtonClicked();
+    void onChangeButtonClicked();
 
 private:
     void updateCountdown();
     void showStartDialog();
     void onBackButtonClicked();
     void onAddButtonClicked();
+    void generateBlocks();
+    void onBlockClicked(int row,int col);
+    void closeEndlessModeWindow();
 };
 
 #endif // ENDLESSMODEWINDOW_H

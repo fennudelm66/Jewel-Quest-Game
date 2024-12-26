@@ -39,7 +39,7 @@ public:
     //撤销步骤
     void revertToLastState() ;
 
-private:
+public:
     int level;
     int points = 0;
     int status;

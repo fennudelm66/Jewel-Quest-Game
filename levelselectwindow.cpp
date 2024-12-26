@@ -42,6 +42,13 @@ LevelSelectWindow::LevelSelectWindow(QWidget *parent)
     // 设置窗口大小
     setFixedSize(300, 400);  // 可调整大小
 
+    // 创建关闭按钮
+    QPushButton *closeButton = new QPushButton("×", this);
+    closeButton->setStyleSheet("background-color: transparent; color: white; font: bold 20px;");
+    closeButton->setFixedSize(30, 30);
+    closeButton->move(260, 80);  // 设置关闭按钮的位置（右上角）
+    connect(closeButton, &QPushButton::clicked, this, &LevelSelectWindow::close);  // 连接关闭按钮的点击事件
+
     // 为动画准备透明度效果
     QGraphicsOpacityEffect *opacityEffect = new QGraphicsOpacityEffect(this);
     setGraphicsEffect(opacityEffect);
@@ -50,6 +57,7 @@ LevelSelectWindow::LevelSelectWindow(QWidget *parent)
     opacityAnimation->setStartValue(0.0);  // 初始透明度为0
     opacityAnimation->setEndValue(1.0);    // 结束透明度为1
     opacityAnimation->start();
+
 }
 
 // 定义槽函数
